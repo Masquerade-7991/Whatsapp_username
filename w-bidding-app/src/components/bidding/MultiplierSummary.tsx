@@ -1,4 +1,4 @@
-const USD_TO_INR = 83
+import { fmtINR } from '@/lib/format'
 
 interface MultiplierSummaryProps {
   baseBid: number
@@ -8,14 +8,12 @@ interface MultiplierSummaryProps {
 export function MultiplierSummary({ baseBid, multiplier }: MultiplierSummaryProps) {
   const effectiveBid = baseBid * multiplier
 
-  const fmt = (usd: number) => `₹${(usd * USD_TO_INR).toFixed(2)}`
-
   return (
     <div className="rounded-lg border border-border bg-muted px-4 py-3 flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
         <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>Base bid</span>
         <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>
-          {fmt(baseBid)} per message
+          {fmtINR(baseBid)} per message
         </span>
       </div>
       <div className="flex items-center justify-between">
@@ -30,7 +28,7 @@ export function MultiplierSummary({ baseBid, multiplier }: MultiplierSummaryProp
           Effective bid
         </span>
         <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--primary)' }}>
-          {fmt(effectiveBid)} per message
+          {fmtINR(effectiveBid)} per message
         </span>
       </div>
     </div>

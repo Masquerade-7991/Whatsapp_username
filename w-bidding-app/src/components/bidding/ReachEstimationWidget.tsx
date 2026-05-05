@@ -4,6 +4,8 @@ import { Select } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { useFeature } from '@/context/FeatureContext'
+import { USD_TO_INR, DATE_INTERVALS } from '@/lib/constants'
+import { fmtINR } from '@/lib/format'
 
 const COUNTRIES = [
   { code: 'IN', label: 'India (IN)' },
@@ -18,12 +20,6 @@ const COUNTRIES = [
   { code: 'NG', label: 'Nigeria (NG)' },
 ]
 
-const DATE_INTERVALS = [
-  { value: 'L1D', label: 'Last 1 day' },
-  { value: 'L7D', label: 'Last 7 days' },
-  { value: 'L14D', label: 'Last 14 days' },
-  { value: 'L28D', label: 'Last 28 days' },
-]
 
 const MOCK_RESULTS: Record<string, { deliveryRate: number; costPerMessage: number }> = {
   'IN-L7D': { deliveryRate: 72, costPerMessage: 0.0041 },
@@ -33,12 +29,6 @@ const MOCK_RESULTS: Record<string, { deliveryRate: number; costPerMessage: numbe
   'BR-L7D': { deliveryRate: 65, costPerMessage: 0.0052 },
   'US-L7D': { deliveryRate: 58, costPerMessage: 0.0078 },
   'DE-L7D': { deliveryRate: 61, costPerMessage: 0.0065 },
-}
-
-const USD_TO_INR = 83
-
-function fmtINR(usd: number): string {
-  return `₹${(usd * USD_TO_INR).toFixed(2)}`
 }
 
 interface DeliveryRow {
