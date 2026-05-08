@@ -6,8 +6,9 @@ import { Select } from '@/components/ui/select'
 import { BiddingToggle } from '@/components/bidding/BiddingToggle'
 import { TopNav } from '@/components/layout/TopNav'
 import { useFeature } from '@/context/FeatureContext'
-import { Plus, X, Smartphone, Sparkles } from 'lucide-react'
+import { Plus, X, Sparkles } from 'lucide-react'
 import { CHANNEL_TABS } from '@/lib/constants'
+import { WhatsAppPhoneMockup } from '@/components/layout/WhatsAppPhoneMockup'
 
 const CATEGORIES = [
   { value: 'MARKETING', label: 'Marketing' },
@@ -75,7 +76,7 @@ export function TemplateCreation() {
         {/* Form panel */}
         <div className="flex-1 overflow-y-auto">
           <form onSubmit={handleSubmit}>
-            <div className="px-8 py-6 max-w-[600px] flex flex-col gap-6">
+            <div className="px-8 py-6 max-w-[600px] mx-auto flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <div style={{ fontSize: '1.125rem', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
                   New WhatsApp template
@@ -211,27 +212,6 @@ export function TemplateCreation() {
                 </div>
               </div>
 
-              {/* ── BIDDING SECTION ── */}
-              {showBidding && (
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>
-                      Max-Price Bidding
-                    </label>
-                    <span
-                      className="px-2 py-0.5 rounded border border-primary/30 bg-accent text-accent-foreground"
-                      style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-medium)' }}
-                    >
-                      Beta
-                    </span>
-                  </div>
-                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-                    Set a maximum bid cap per 1,000 message deliveries for this marketing template.
-                  </p>
-                  <BiddingToggle />
-                </div>
-              )}
-
               {/* Footer */}
               <div className="flex flex-col gap-2">
                 <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>
@@ -252,6 +232,27 @@ export function TemplateCreation() {
                   </div>
                 </div>
               </div>
+
+              {/* ── BIDDING SECTION ── */}
+              {showBidding && (
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>
+                      Max-Price Bidding
+                    </label>
+                    <span
+                      className="px-2 py-0.5 rounded border border-primary/30 bg-accent text-accent-foreground"
+                      style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-medium)' }}
+                    >
+                      Beta
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
+                    Set a maximum bid cap per 1,000 message deliveries for this marketing template.
+                  </p>
+                  <BiddingToggle />
+                </div>
+              )}
 
               {/* Call to Action */}
               <div className="flex flex-col gap-3">
@@ -298,35 +299,17 @@ export function TemplateCreation() {
           </form>
         </div>
 
-        {/* Preview panel */}
-        <div className="w-72 shrink-0 border-l border-border bg-muted/30 flex flex-col">
-          <div className="px-6 py-4 border-b border-border">
+        {/* Preview panel — non-scrollable */}
+        <div className="w-72 shrink-0 border-l border-border bg-muted/30 flex flex-col overflow-hidden">
+          <div className="px-6 py-4 border-b border-border shrink-0">
             <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>Preview</span>
           </div>
-          <div className="flex-1 flex items-start justify-center pt-8 px-6">
-            <div className="w-56 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
-              {/* Phone bar */}
-              <div className="bg-[#075E54] px-3 py-2 flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-white/30" />
-                <div>
-                  <p className="text-white" style={{ fontSize: '11px', fontWeight: 'var(--font-weight-semi-bold)' }}>Test - WABA Account</p>
-                </div>
-              </div>
-              {/* Chat area */}
-              <div className="bg-[#ECE5DD] p-3 min-h-[160px]">
-                {body && (
-                  <div className="bg-white rounded-lg p-2 shadow-sm" style={{ fontSize: '12px', maxWidth: '90%' }}>
-                    {body}
-                  </div>
-                )}
-                {!body && (
-                  <div className="flex flex-col items-center justify-center h-20 gap-1 opacity-40">
-                    <Smartphone style={{ width: 24, height: 24 }} />
-                    <span style={{ fontSize: '10px' }}>Preview appears here</span>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="flex-1 flex items-center justify-center px-6 overflow-hidden">
+            <WhatsAppPhoneMockup
+              body={body}
+              footer={footer}
+              buttons={['Visit Website', 'Call Phone Number', 'Copy Offer Code']}
+            />
           </div>
         </div>
       </div>
