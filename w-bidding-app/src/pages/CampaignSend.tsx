@@ -277,7 +277,7 @@ export function CampaignSend() {
                     </p>
                     <MultiplierSlider value={multiplier} onChange={setMultiplier} />
                     <MultiplierSummary baseBid={template.bidAmount} multiplier={multiplier} />
-                    <ReachEstimationWidget bidAmount={template.bidAmount * multiplier} />
+                    <ReachEstimationWidget />
                   </div>
                 </div>
               )}

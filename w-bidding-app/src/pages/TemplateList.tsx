@@ -1,13 +1,14 @@
-import { useState, useRef, useEffect, ElementType } from 'react'
+import { useState, useRef, useEffect, type ElementType } from 'react'
 import { Link } from 'react-router-dom'
 import {
   MoreVertical, X, AlertCircle, Search, AlignJustify,
   RefreshCw, SlidersHorizontal, ChevronDown, Plus,
   ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight,
-  LayoutGrid, CheckCircle, TrendingUp, Sparkles,
+  LayoutGrid, CheckCircle, TrendingUp, Sparkles, Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import { TopNav } from '@/components/layout/TopNav'
 import { BID_MIN, BID_MAX, CHANNEL_TABS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
@@ -133,7 +134,21 @@ function UpdateBidModal({
       <div className="bg-background rounded-xl shadow-xl w-full mx-4" style={{ maxWidth: 440 }}>
         <div className="flex items-start justify-between px-6 py-4 border-b border-border">
           <div>
-            <p style={{ fontSize: '1rem', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>Update bid</p>
+            <div className="flex items-center gap-1.5">
+              <p style={{ fontSize: '1rem', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>Update bid</p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span style={{ display: 'flex', alignItems: 'center', cursor: 'default' }}>
+                      <Info style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" style={{ maxWidth: 220 }}>
+                    Set a new custom bid value for the template. Only 100 attempts allowed per hour.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', marginTop: 2 }}>{template.name}</p>
           </div>
           <button
@@ -144,43 +159,35 @@ function UpdateBidModal({
             <X style={{ width: 16, height: 16 }} />
           </button>
         </div>
-        <div className="px-6 py-5 flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
-              Cost per message
-            </label>
-            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-              Set a maximum bid cap per 1,000 message deliveries (₹{BID_MIN.toFixed(2)} – ₹{BID_MAX.toFixed(2)}).
-            </p>
-            <div className="flex items-center gap-2">
-              <div style={{ maxWidth: 200, flex: 1 }}>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min={BID_MIN}
-                  max={BID_MAX}
-                  placeholder="0.00"
-                  value={value}
-                  onChange={handleChange}
-                  onBlur={() => setTouched(true)}
-                  className={hasError ? 'border-destructive focus-visible:ring-destructive' : ''}
-                />
-              </div>
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)', fontWeight: 'var(--font-weight-medium)' }}>INR</span>
+        <div className="px-6 py-5 flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <div style={{ width: 120 }}>
+              <Input
+                type="number"
+                step="0.01"
+                min={BID_MIN}
+                max={BID_MAX}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                onBlur={() => setTouched(true)}
+                className={hasError ? 'border-destructive focus-visible:ring-destructive' : ''}
+              />
             </div>
-            {hasError && (
-              <div className="flex items-center gap-1" style={{ fontSize: 'var(--text-xs)', color: 'var(--destructive)' }}>
-                <AlertCircle style={{ width: 12, height: 12 }} />
-                Bid must be between ₹{BID_MIN.toFixed(2)} and ₹{BID_MAX.toFixed(2)}
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)', fontWeight: 'var(--font-weight-medium)', flexShrink: 0 }}>INR</span>
+            {per1000 !== null && (
+              <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted flex-1">
+                <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>Cost per 1,000:</span>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                  ₹{per1000.toFixed(2)} INR
+                </span>
               </div>
             )}
           </div>
-          {per1000 !== null && (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted">
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>Cost per 1,000:</span>
-              <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
-                ₹{per1000.toFixed(2)} INR
-              </span>
+          {hasError && (
+            <div className="flex items-center gap-1" style={{ fontSize: 'var(--text-xs)', color: 'var(--destructive)' }}>
+              <AlertCircle style={{ width: 12, height: 12 }} />
+              Bid must be between ₹{BID_MIN.toFixed(2)} and ₹{BID_MAX.toFixed(2)}
             </div>
           )}
         </div>
@@ -240,7 +247,7 @@ function StatsCard({
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-const TABLE_COLS = ['Template Name', 'Category', 'Template ID', 'Language', 'Status', 'Reason', 'Bid Cap', 'Last Updated', 'Action'] as const
+const TABLE_COLS = ['Template Name', 'Category', 'Template ID', 'Language', 'Status', 'Reason', 'Last Updated', 'Action'] as const
 
 export function TemplateList() {
   const [templates, setTemplates] = useState<Template[]>(INITIAL_TEMPLATES)
@@ -464,8 +471,27 @@ export function TemplateList() {
                         style={{ borderBottom: i < paginated.length - 1 ? '1px solid var(--border)' : undefined }}
                       >
                         <td className="px-4 py-3">
-                          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>
-                            {t.name}
+                          <span className="inline-flex items-center gap-1.5">
+                            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>
+                              {t.name}
+                            </span>
+                            {t.category === 'MARKETING' && t.bidAmount !== undefined && (
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span
+                                      style={{ color: 'var(--primary)', fontSize: 11, lineHeight: 1, cursor: 'default', userSelect: 'none' }}
+                                      aria-label="Custom bid value is applied"
+                                    >
+                                      ✦
+                                    </span>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top">
+                                    Custom bid value is applied
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            )}
                           </span>
                         </td>
                         <td className="px-4 py-3">
@@ -488,15 +514,6 @@ export function TemplateList() {
                           <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
                             {t.reason || '—'}
                           </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          {t.bidAmount !== undefined ? (
-                            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>
-                              ₹{t.bidAmount.toFixed(2)}
-                            </span>
-                          ) : (
-                            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>—</span>
-                          )}
                         </td>
                         <td className="px-4 py-3">
                           <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{t.lastUpdated}</span>

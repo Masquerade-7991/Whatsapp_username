@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select } from '@/components/ui/select'
 import { BiddingToggle } from '@/components/bidding/BiddingToggle'
+import { ReachEstimationWidget } from '@/components/bidding/ReachEstimationWidget'
 import { TopNav } from '@/components/layout/TopNav'
 import { useFeature } from '@/context/FeatureContext'
 import { Plus, X, Sparkles } from 'lucide-react'
@@ -235,23 +236,12 @@ export function TemplateCreation() {
 
               {/* ── BIDDING SECTION ── */}
               {showBidding && (
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>
-                      Max-Price Bidding
-                    </label>
-                    <span
-                      className="px-2 py-0.5 rounded border border-primary/30 bg-accent text-accent-foreground"
-                      style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-medium)' }}
-                    >
-                      Beta
-                    </span>
-                  </div>
-                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-                    Set a maximum bid cap per 1,000 message deliveries for this marketing template.
-                  </p>
+                <>
                   <BiddingToggle />
-                </div>
+
+                  {/* Preview Estimated Reach block — same hierarchy level */}
+                  <ReachEstimationWidget />
+                </>
               )}
 
               {/* Call to Action */}
