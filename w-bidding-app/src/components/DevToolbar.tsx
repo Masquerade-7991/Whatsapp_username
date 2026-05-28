@@ -14,7 +14,7 @@ const STATES: { value: EstimateState; label: string }[] = [
 
 export function DevToolbar() {
   const [open, setOpen] = useState(true)
-  const { metaEnabled, setMetaEnabled, reachEstimateState, setReachEstimateState } = useFeature()
+  const { metaEnabled, setMetaEnabled, reachEstimateState, setReachEstimateState, whatsappUsernamesEnabled, setWhatsappUsernamesEnabled } = useFeature()
 
   return (
     <div
@@ -88,6 +88,24 @@ export function DevToolbar() {
                   {s.label}
                 </button>
               ))}
+            </div>
+          </div>
+
+          <div className="h-px bg-border" />
+
+          {/* WA Usernames Feature Flag */}
+          <div className="flex flex-col gap-1.5">
+            <p style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+              WA Usernames Flag
+            </p>
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={whatsappUsernamesEnabled}
+                onCheckedChange={setWhatsappUsernamesEnabled}
+              />
+              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
+                {whatsappUsernamesEnabled ? 'On (username field visible)' : 'Off'}
+              </span>
             </div>
           </div>
 

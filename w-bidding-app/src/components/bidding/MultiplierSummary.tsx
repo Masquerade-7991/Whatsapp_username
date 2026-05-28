@@ -1,8 +1,10 @@
-import { fmtINR } from '@/lib/format'
-
 interface MultiplierSummaryProps {
   baseBid: number
   multiplier: number
+}
+
+function fmtBid(inr: number): string {
+  return `₹${inr.toFixed(2)}`
 }
 
 export function MultiplierSummary({ baseBid, multiplier }: MultiplierSummaryProps) {
@@ -13,7 +15,7 @@ export function MultiplierSummary({ baseBid, multiplier }: MultiplierSummaryProp
       <div className="flex items-center justify-between">
         <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>Base bid</span>
         <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>
-          {fmtINR(baseBid)} per message
+          {fmtBid(baseBid)} per message
         </span>
       </div>
       <div className="flex items-center justify-between">
@@ -28,7 +30,7 @@ export function MultiplierSummary({ baseBid, multiplier }: MultiplierSummaryProp
           Effective bid
         </span>
         <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--primary)' }}>
-          {fmtINR(effectiveBid)} per message
+          {fmtBid(effectiveBid)} per message
         </span>
       </div>
     </div>

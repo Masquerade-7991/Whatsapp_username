@@ -4,6 +4,7 @@ import { TemplateList } from '@/pages/TemplateList'
 import { TemplateCreation } from '@/pages/TemplateCreation'
 import { CampaignSend } from '@/pages/CampaignSend'
 import { Reports } from '@/pages/Reports'
+import { BusinessProfile } from '@/pages/BusinessProfile'
 import { DevToolbar } from '@/components/DevToolbar'
 import { FeatureProvider } from '@/context/FeatureContext'
 
@@ -42,6 +43,7 @@ export default function App() {
             <Route path="/governance" element={<PlaceholderPage title="Governance" />} />
             <Route path="/flows" element={<PlaceholderPage title="Flows" />} />
             <Route path="/shortlinks" element={<PlaceholderPage title="Shortlinks" />} />
+            <Route path="/profiles/edit" element={<BusinessProfile />} />
             <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
             <Route path="/developers" element={<PlaceholderPage title="Developers" />} />
             <Route path="*" element={<Navigate to="/templates" replace />} />

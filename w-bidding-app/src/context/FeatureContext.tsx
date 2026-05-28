@@ -7,6 +7,8 @@ interface FeatureContextValue {
   setMetaEnabled: (v: boolean) => void
   reachEstimateState: ReachEstimateState
   setReachEstimateState: (v: ReachEstimateState) => void
+  whatsappUsernamesEnabled: boolean
+  setWhatsappUsernamesEnabled: (v: boolean) => void
 }
 
 const FeatureContext = createContext<FeatureContextValue | null>(null)
@@ -14,9 +16,10 @@ const FeatureContext = createContext<FeatureContextValue | null>(null)
 export function FeatureProvider({ children }: { children: React.ReactNode }) {
   const [metaEnabled, setMetaEnabled] = useState(true)
   const [reachEstimateState, setReachEstimateState] = useState<ReachEstimateState>('success')
+  const [whatsappUsernamesEnabled, setWhatsappUsernamesEnabled] = useState(false)
 
   return (
-    <FeatureContext.Provider value={{ metaEnabled, setMetaEnabled, reachEstimateState, setReachEstimateState }}>
+    <FeatureContext.Provider value={{ metaEnabled, setMetaEnabled, reachEstimateState, setReachEstimateState, whatsappUsernamesEnabled, setWhatsappUsernamesEnabled }}>
       {children}
     </FeatureContext.Provider>
   )

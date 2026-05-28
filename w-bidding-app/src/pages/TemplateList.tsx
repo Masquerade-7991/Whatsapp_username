@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect, type ElementType } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   MoreVertical, X, AlertCircle, Search, AlignJustify,
-  RefreshCw, SlidersHorizontal, ChevronDown, Plus,
+  RefreshCw, SlidersHorizontal, ChevronDown, Plus, Download,
   ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight,
   LayoutGrid, CheckCircle, TrendingUp, Sparkles, Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Select } from '@/components/ui/select'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import { TopNav } from '@/components/layout/TopNav'
 import { BID_MIN, BID_MAX, CHANNEL_TABS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
+import { maskPhone } from '@/lib/format'
 
 interface Template {
   id: string
@@ -245,11 +247,300 @@ function StatsCard({
   )
 }
 
+// ─── Profiles ────────────────────────────────────────────────────────────────
+
+interface ProfileRow {
+  id: string
+  businessName: string
+  businessNumber: string
+  quality: 'HIGH' | 'MEDIUM' | 'LOW'
+  status: 'Connected' | 'Disconnected'
+  lastUpdated: string
+}
+
+const PROFILES_MOCK: ProfileRow[] = [
+  { id: '1', businessName: 'Test - Helo.ai',  businessNumber: '15557836045', quality: 'HIGH', status: 'Connected', lastUpdated: 'Apr 2, 2026, 11:22:00 AM' },
+  { id: '2', businessName: 'VCPL - Test1',    businessNumber: '15557836046', quality: 'HIGH', status: 'Connected', lastUpdated: 'NA' },
+]
+
+const QUALITY_COLOR: Record<string, string> = {
+  HIGH: '#22c55e', MEDIUM: '#f59e0b', LOW: '#ef4444',
+}
+
+function ProfileRowActions({ onEdit }: { onEdit: () => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+
+  return (
+    <div ref={ref} className="relative inline-block">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="p-1.5 rounded hover:bg-muted transition-colors"
+        style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted-foreground)', display: 'flex', alignItems: 'center' }}
+        aria-label="Row actions"
+      >
+        <MoreVertical style={{ width: 16, height: 16 }} />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-20 rounded-lg border border-border bg-background shadow-md py-1" style={{ minWidth: 140 }}>
+          <button
+            onClick={() => { setOpen(false); onEdit() }}
+            className="w-full text-left px-3 py-2 hover:bg-muted transition-colors"
+            style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            Edit
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ProfilesView() {
+  const navigate = useNavigate()
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
+
+  const filtered = PROFILES_MOCK.filter(p => {
+    const matchSearch = p.businessName.toLowerCase().includes(search.toLowerCase())
+    const matchStatus = !statusFilter || p.status === statusFilter
+    return matchSearch && matchStatus
+  })
+
+  return (
+    <div className="flex flex-col gap-0">
+      {/* Toolbar */}
+      <div className="flex items-center gap-2 mb-4 flex-wrap">
+        <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2" style={{ minWidth: 240 }}>
+          <input
+            type="text"
+            placeholder="Search by Business Name"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}
+          />
+          <AlignJustify style={{ width: 14, height: 14, color: 'var(--muted-foreground)', flexShrink: 0 }} />
+        </div>
+        <button
+          className="p-2 rounded-lg border border-border bg-background hover:bg-muted transition-colors flex items-center justify-center"
+          style={{ cursor: 'pointer', color: 'var(--muted-foreground)' }}
+        >
+          <Search style={{ width: 15, height: 15 }} />
+        </button>
+        <Select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ minWidth: 140 }}>
+          <option value="">Select Status</option>
+          <option value="Connected">Connected</option>
+          <option value="Disconnected">Disconnected</option>
+        </Select>
+        <button
+          className="p-2 rounded-lg border border-border bg-background hover:bg-muted transition-colors flex items-center justify-center"
+          style={{ cursor: 'pointer', color: 'var(--muted-foreground)' }}
+          onClick={() => { setSearch(''); setStatusFilter('') }}
+        >
+          <RefreshCw style={{ width: 15, height: 15 }} />
+        </button>
+        <Button size="sm" className="flex items-center gap-1.5">
+          Embedded Sign-up
+        </Button>
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-background" style={{ minWidth: 200 }}>
+          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}>1023586759560338</span>
+          <ChevronDown style={{ width: 14, height: 14, color: 'var(--muted-foreground)', marginLeft: 'auto' }} />
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-lg border border-border overflow-hidden bg-background">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b border-border">
+                {['Business Name', 'Business Number', 'Quality', 'Status', 'Last Updated', 'Action'].map(h => (
+                  <th key={h} className="px-4 py-3 text-left whitespace-nowrap" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-12 text-center" style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
+                    No profiles found
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((p, i) => (
+                  <tr key={p.id} className="hover:bg-muted/20 transition-colors" style={{ borderBottom: i < filtered.length - 1 ? '1px solid var(--border)' : undefined }}>
+                    <td className="px-4 py-4">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', fontWeight: 'var(--font-weight-medium)' }}>{p.businessName}</span>
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}>{p.businessNumber}</span>
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5">
+                        <span style={{ width: 7, height: 7, borderRadius: '50%', background: QUALITY_COLOR[p.quality], flexShrink: 0, display: 'inline-block' }} />
+                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}>{p.quality}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <span
+                        className="px-3 py-1 rounded-full"
+                        style={{
+                          fontSize: 'var(--text-xs)',
+                          fontWeight: 'var(--font-weight-medium)',
+                          background: p.status === 'Connected' ? '#22c55e' : '#e5e7eb',
+                          color: p.status === 'Connected' ? '#fff' : 'var(--foreground)',
+                          display: 'inline-block',
+                        }}
+                      >
+                        {p.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{p.lastUpdated}</span>
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <ProfileRowActions onEdit={() => navigate('/profiles/edit')} />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Contact Book ─────────────────────────────────────────────────────────────
+
+interface ContactRow {
+  id: string
+  displayName: string
+  userId: string
+  phone: string
+  businessName: string
+  businessNumber: string
+  lastSeen: string
+}
+
+const CONTACTS_MOCK: ContactRow[] = [
+  { id: '1', displayName: 'Rahul Sharma',   userId: 'IN.13491208655302741918', phone: '918433853078', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-22 14:43' },
+  { id: '2', displayName: 'Priya Mehta',    userId: 'IN.87382107544291630807', phone: '918108653528', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-22 12:12' },
+  { id: '3', displayName: 'Amit Verma',     userId: 'IN.76271006433180519696', phone: '917021344401', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-21 22:23' },
+  { id: '4', displayName: 'John Smith',     userId: 'US.68946509055302741918', phone: '14155551234',  businessName: 'VCPL - Test1',   businessNumber: '15557836046', lastSeen: '2026-05-21 18:30' },
+  { id: '5', displayName: 'Sneha Patel',    userId: 'IN.51273006433080519696', phone: '919876543210', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-20 09:15' },
+  { id: '6', displayName: 'Vikram Singh',   userId: 'IN.40164905321969408585', phone: '918765432109', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-19 16:44' },
+  { id: '7', displayName: 'Neha Kapoor',    userId: 'IN.29055804210858297474', phone: '917654321098', businessName: 'VCPL - Test1',   businessNumber: '15557836046', lastSeen: '2026-05-18 11:02' },
+  { id: '8', displayName: 'Arjun Reddy',    userId: 'IN.17946703109747186363', phone: '919543210987', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-17 08:30' },
+]
+
+function ContactBookView() {
+  const [search, setSearch] = useState('')
+
+  const filtered = CONTACTS_MOCK.filter(c =>
+    c.displayName.toLowerCase().includes(search.toLowerCase()) ||
+    c.userId.toLowerCase().includes(search.toLowerCase()) ||
+    maskPhone(c.phone).includes(search) ||
+    c.businessName.toLowerCase().includes(search.toLowerCase())
+  )
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 flex-1" style={{ maxWidth: 360 }}>
+        <Search style={{ width: 14, height: 14, color: 'var(--muted-foreground)', flexShrink: 0 }} />
+        <input
+          type="text"
+          placeholder="Search by name, User ID or business"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}
+        />
+        </div>
+        <div className="ml-auto">
+          <Button size="sm" variant="outline" className="flex items-center gap-1.5">
+            <Download style={{ width: 14, height: 14 }} />
+            Export
+          </Button>
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-border overflow-hidden bg-background">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b border-border">
+                {['User Display Name', 'User ID', 'User Phone Number', 'Business Name', 'Business Number', 'Last Seen'].map(h => (
+                  <th key={h} className="px-4 py-3 text-left whitespace-nowrap" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-12 text-center" style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
+                    No contacts found
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((c, i) => (
+                  <tr key={c.id} className="hover:bg-muted/20 transition-colors" style={{ borderBottom: i < filtered.length - 1 ? '1px solid var(--border)' : undefined }}>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>{c.displayName}</span>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'monospace' }}>{c.userId}</span>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', fontFamily: 'monospace' }}>{maskPhone(c.phone)}</span>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}>{c.businessName}</span>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{c.businessNumber}</span>
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{c.lastSeen}</span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex items-center justify-end px-4 py-2.5 border-t border-border">
+          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
+            {filtered.length} of {CONTACTS_MOCK.length} contacts
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const TABLE_COLS = ['Template Name', 'Category', 'Template ID', 'Language', 'Status', 'Reason', 'Last Updated', 'Action'] as const
 
+type SubTab = 'Profiles' | 'Templates' | 'Contacts'
+
 export function TemplateList() {
+  const [activeSubTab, setActiveSubTab] = useState<SubTab>('Templates')
   const [templates, setTemplates] = useState<Template[]>(INITIAL_TEMPLATES)
   const [updatingTemplate, setUpdatingTemplate] = useState<Template | null>(null)
   const [search, setSearch] = useState('')
@@ -324,12 +615,13 @@ export function TemplateList() {
 
           {/* Sub-tabs */}
           <div className="flex items-center gap-1">
-            {(['Profiles', 'Templates'] as const).map(tab => (
+            {(['Profiles', 'Templates', 'Contacts'] as const).map(tab => (
               <button
                 key={tab}
+                onClick={() => setActiveSubTab(tab)}
                 className={cn(
                   'px-5 py-2 rounded-md text-sm font-medium transition-colors',
-                  tab === 'Templates'
+                  activeSubTab === tab
                     ? 'bg-primary text-primary-foreground'
                     : 'border border-border text-muted-foreground hover:bg-muted bg-background'
                 )}
@@ -341,6 +633,19 @@ export function TemplateList() {
           </div>
         </div>
 
+        {activeSubTab === 'Contacts' && (
+          <div className="px-6 py-5">
+            <ContactBookView />
+          </div>
+        )}
+
+        {activeSubTab === 'Profiles' && (
+          <div className="px-6 py-5">
+            <ProfilesView />
+          </div>
+        )}
+
+        {activeSubTab === 'Templates' && (
         <div className="px-6 py-5 flex flex-col gap-4">
           {/* Stats cards */}
           <div className="grid grid-cols-3 gap-4">
@@ -566,7 +871,9 @@ export function TemplateList() {
             </div>
           </div>
         </div>
+        )}
       </div>
+
 
       {updatingTemplate && (
         <UpdateBidModal

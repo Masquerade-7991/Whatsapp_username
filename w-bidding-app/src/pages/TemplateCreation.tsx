@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -7,7 +7,7 @@ import { BiddingToggle } from '@/components/bidding/BiddingToggle'
 import { ReachEstimationWidget } from '@/components/bidding/ReachEstimationWidget'
 import { TopNav } from '@/components/layout/TopNav'
 import { useFeature } from '@/context/FeatureContext'
-import { Plus, X, Sparkles } from 'lucide-react'
+import { Plus, X, Sparkles, ChevronDown } from 'lucide-react'
 import { CHANNEL_TABS } from '@/lib/constants'
 import { WhatsAppPhoneMockup } from '@/components/layout/WhatsAppPhoneMockup'
 
@@ -18,6 +18,30 @@ const CATEGORIES = [
   { value: 'SERVICE', label: 'Service' },
 ]
 
+type ButtonType = 'QUICK_REPLY' | 'VISIT_WEBSITE' | 'CALL_PHONE' | 'COPY_OFFER_CODE' | 'REQUEST_CONTACT_INFO'
+
+interface CtaButton {
+  id: number
+  type: ButtonType
+  text: string
+}
+
+const BUTTON_TYPE_LABELS: Record<ButtonType, string> = {
+  QUICK_REPLY: 'Quick Reply',
+  VISIT_WEBSITE: 'Visit Website',
+  CALL_PHONE: 'Call Phone Number',
+  COPY_OFFER_CODE: 'Copy Offer Code',
+  REQUEST_CONTACT_INFO: 'Request Contact Info',
+}
+
+const BUTTON_TYPE_SUBTITLES: Record<ButtonType, string> = {
+  QUICK_REPLY: '',
+  VISIT_WEBSITE: 'URL Type: Static',
+  CALL_PHONE: 'Country: +91',
+  COPY_OFFER_CODE: '',
+  REQUEST_CONTACT_INFO: 'Sends user\'s phone number to business',
+}
+
 const HEADER_TYPES = [
   { value: 'NONE', label: 'None' },
   { value: 'TEXT', label: 'Text' },
@@ -25,6 +49,61 @@ const HEADER_TYPES = [
   { value: 'VIDEO', label: 'Video' },
   { value: 'DOCUMENT', label: 'Document' },
 ]
+
+let _btnId = 4
+
+function AddButtonDropdown({ available, onAdd }: { available: ButtonType[]; onAdd: (t: ButtonType) => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+
+  if (available.length === 0) return null
+
+  return (
+    <div ref={ref} className="relative w-fit">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1 px-3 py-2 rounded-lg border border-dashed border-border hover:border-primary hover:text-primary transition-colors"
+        style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)', background: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+      >
+        <Plus style={{ width: 14, height: 14 }} />
+        Add a button
+        <ChevronDown style={{ width: 12, height: 12 }} />
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full mt-1 z-20 rounded-lg border border-border bg-background shadow-md py-1" style={{ minWidth: 220 }}>
+          {available.map(type => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => { onAdd(type); setOpen(false) }}
+              className="w-full text-left px-4 py-2 hover:bg-muted transition-colors flex flex-col gap-0.5"
+              style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+            >
+              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', fontWeight: 'var(--font-weight-medium)' }}>
+                {BUTTON_TYPE_LABELS[type]}
+              </span>
+              {BUTTON_TYPE_SUBTITLES[type] && (
+                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
+                  {BUTTON_TYPE_SUBTITLES[type]}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function TemplateCreation() {
   const { metaEnabled } = useFeature()
@@ -34,8 +113,34 @@ export function TemplateCreation() {
   const [body, setBody] = useState('')
   const [footer, setFooter] = useState('')
   const [nameError, setNameError] = useState(false)
+  const [buttons, setButtons] = useState<CtaButton[]>([
+    { id: 1, type: 'VISIT_WEBSITE', text: 'Visit Website' },
+    { id: 2, type: 'CALL_PHONE', text: 'Call Phone Number' },
+    { id: 3, type: 'COPY_OFFER_CODE', text: 'Copy Offer Code' },
+  ])
 
   const showBidding = category === 'MARKETING' && metaEnabled
+
+  const hasRequestContactInfo = buttons.some(b => b.type === 'REQUEST_CONTACT_INFO')
+  const canAddRequestContactInfo = !hasRequestContactInfo && (category === 'MARKETING' || category === 'UTILITY')
+  const visitWebsiteCount = buttons.filter(b => b.type === 'VISIT_WEBSITE').length
+  const callPhoneCount = buttons.filter(b => b.type === 'CALL_PHONE').length
+
+  const availableButtonTypes: ButtonType[] = [
+    'QUICK_REPLY',
+    ...(visitWebsiteCount < 2 ? ['VISIT_WEBSITE' as ButtonType] : []),
+    ...(callPhoneCount < 1 ? ['CALL_PHONE' as ButtonType] : []),
+    'COPY_OFFER_CODE',
+    ...(canAddRequestContactInfo ? ['REQUEST_CONTACT_INFO' as ButtonType] : []),
+  ]
+
+  function addButton(type: ButtonType) {
+    setButtons(prev => [...prev, { id: ++_btnId, type, text: BUTTON_TYPE_LABELS[type] }])
+  }
+
+  function removeButton(id: number) {
+    setButtons(prev => prev.filter(b => b.id !== id))
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -253,30 +358,40 @@ export function TemplateCreation() {
                   Create Call to Action or Reply Buttons that let customers respond to your message or take action. You can add up to 10 buttons.
                 </p>
                 <div className="flex flex-col gap-2">
-                  {[
-                    { type: 'Visit Website', sub: 'URL Type: Static' },
-                    { type: 'Call Phone Number', sub: 'Country: +91' },
-                    { type: 'Copy Offer Code', sub: '' },
-                  ].map((btn, i) => (
-                    <div key={i} className="rounded-lg border border-border p-3 flex items-start justify-between">
+                  {buttons.map(btn => (
+                    <div key={btn.id} className="rounded-lg border border-border p-3 flex items-start justify-between">
                       <div className="flex flex-col gap-1">
                         <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>Type of Action</span>
-                        <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>{btn.type}</span>
-                        {btn.sub && <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>{btn.sub}</span>}
+                        <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>
+                          {BUTTON_TYPE_LABELS[btn.type]}
+                        </span>
+                        {BUTTON_TYPE_SUBTITLES[btn.type] && (
+                          <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
+                            {BUTTON_TYPE_SUBTITLES[btn.type]}
+                          </span>
+                        )}
+                        {btn.type === 'REQUEST_CONTACT_INFO' && (
+                          <span
+                            className="inline-flex items-center gap-1 mt-0.5 px-2 py-0.5 rounded-full w-fit"
+                            style={{ fontSize: '10px', background: '#dbeafe', color: '#1d4ed8', fontWeight: 'var(--font-weight-medium)' }}
+                          >
+                            New
+                          </span>
+                        )}
                       </div>
-                      <button type="button" className="p-1 hover:bg-muted rounded transition-colors" style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
+                      <button
+                        type="button"
+                        onClick={() => removeButton(btn.id)}
+                        className="p-1 hover:bg-muted rounded transition-colors"
+                        style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                      >
                         <X style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
                       </button>
                     </div>
                   ))}
-                  <button
-                    type="button"
-                    className="flex items-center gap-1 px-3 py-2 rounded-lg border border-dashed border-border hover:border-primary hover:text-primary transition-colors w-fit"
-                    style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)', background: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
-                  >
-                    <Plus style={{ width: 14, height: 14 }} />
-                    Add a button
-                  </button>
+                  {buttons.length < 10 && (
+                    <AddButtonDropdown available={availableButtonTypes} onAdd={addButton} />
+                  )}
                 </div>
               </div>
 
@@ -298,7 +413,7 @@ export function TemplateCreation() {
             <WhatsAppPhoneMockup
               body={body}
               footer={footer}
-              buttons={['Visit Website', 'Call Phone Number', 'Copy Offer Code']}
+              buttons={buttons.map(b => BUTTON_TYPE_LABELS[b.type])}
             />
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { cn } from '@/lib/utils'
 
-const TICKS = [1.0, 1.5, 2.0, 2.5, 3.0]
+const TICKS = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
 
 interface MultiplierSliderProps {
   value: number
@@ -18,29 +18,21 @@ export function MultiplierSlider({ value, onChange, className }: MultiplierSlide
     onChange(snapped)
   }
 
-  const percent = ((value - 1.0) / (3.0 - 1.0)) * 100
+  const percent = ((value - 0.5) / (3.0 - 0.5)) * 100
 
   return (
     <div className={cn('flex flex-col gap-3', className)}>
       {/* Track + thumb */}
       <div className="relative pt-1">
-        <div
-          className="h-1 rounded-full absolute top-[calc(0.25rem+2px)]"
-          style={{
-            left: 0,
-            width: `${percent}%`,
-            background: 'var(--primary)',
-          }}
-        />
         <input
           ref={inputRef}
           type="range"
-          min={1.0}
+          min={0.5}
           max={3.0}
           step={0.1}
           value={value}
           onChange={handleChange}
-          className="w-full relative z-10"
+          className="w-full"
           style={{
             background: `linear-gradient(to right, var(--primary) ${percent}%, var(--border) ${percent}%)`
           }}

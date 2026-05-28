@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Check, ChevronRight, ChevronDown, HelpCircle, GripVertical } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Check, ChevronRight, ChevronDown, HelpCircle, GripVertical, Upload, FileText, Users, ChevronLeft as ChevronLeftIcon, Eye, Download, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
@@ -20,7 +20,7 @@ const STEPS = [
 ]
 
 const TEMPLATES = [
-  { value: 'summer_sale_v1', label: 'summer_sale_v1 (Marketing · Bid set)', hasBid: true, bidAmount: 0.005 },
+  { value: 'summer_sale_v1', label: 'summer_sale_v1 (Marketing · Bid set)', hasBid: true, bidAmount: 0.80 },
   { value: 'welcome_offer', label: 'welcome_offer (Marketing · No bid)', hasBid: false, bidAmount: 0 },
   { value: 'utility_update', label: 'utility_update (Utility)', hasBid: false, bidAmount: 0 },
 ]
@@ -40,9 +40,255 @@ const TEMPLATE_PREVIEW: Record<string, { body: string; footer: string }> = {
   },
 }
 
+type FileStatus = 'pending' | 'success' | 'failed'
+
+function AudienceStep({ onUploaded }: { onUploaded?: (done: boolean) => void }) {
+  const [audienceTab, setAudienceTab] = useState<'upload' | 'segment'>('upload')
+  const [dragging, setDragging] = useState(false)
+  const [uploadedFile, setUploadedFile] = useState<string | null>(null)
+  const [fileStatus, setFileStatus] = useState<FileStatus | null>(null)
+  const [removeDuplicatesChecked, setRemoveDuplicatesChecked] = useState(false)
+  const [removeDuplicatesScope, setRemoveDuplicatesScope] = useState<'single' | 'multiple'>('single')
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    setDragging(false)
+    const file = e.dataTransfer.files[0]
+    if (file) { setUploadedFile(file.name); setFileStatus('pending') }
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) { setUploadedFile(file.name); setFileStatus('pending') }
+  }
+
+  function handleDeleteFile() {
+    setUploadedFile(null)
+    setFileStatus(null)
+    onUploaded?.(false)
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  function handleUpload() {
+    setFileStatus('success')
+    onUploaded?.(true)
+  }
+
+  return (
+    <div className="flex flex-col gap-5">
+      {/* Method picker */}
+      <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-2.5 px-4 py-3 rounded-lg border cursor-pointer flex-1 transition-colors"
+          style={{ borderColor: audienceTab === 'upload' ? 'var(--primary)' : 'var(--border)', background: audienceTab === 'upload' ? 'hsl(var(--primary)/0.06)' : 'var(--background)' }}
+          onClick={() => setAudienceTab('upload')}
+        >
+          <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0" style={{ borderColor: audienceTab === 'upload' ? 'var(--primary)' : 'var(--border)' }}>
+            {audienceTab === 'upload' && <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'block' }} />}
+          </div>
+          <div>
+            <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>Upload file</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>.txt, .csv, .zip and .xlsx formats accepted.</div>
+          </div>
+        </div>
+        <div
+          className="flex items-center gap-2.5 px-4 py-3 rounded-lg border cursor-pointer flex-1 transition-colors"
+          style={{ borderColor: audienceTab === 'segment' ? 'var(--primary)' : 'var(--border)', background: audienceTab === 'segment' ? 'hsl(var(--primary)/0.06)' : 'var(--background)' }}
+          onClick={() => setAudienceTab('segment')}
+        >
+          <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0" style={{ borderColor: audienceTab === 'segment' ? 'var(--primary)' : 'var(--border)' }}>
+            {audienceTab === 'segment' && <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'block' }} />}
+          </div>
+          <div>
+            <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>Select segment</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>Segments from clarity will be shown.</div>
+          </div>
+        </div>
+      </div>
+
+      {audienceTab === 'upload' && (
+        <>
+          {/* NOTE + Sample File row */}
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--foreground)' }}>
+                <strong>NOTE:</strong> Same type of files are accepted
+              </p>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', marginTop: 2 }}>
+                In .csv file don't use comma and in .txt file don't use delimiters in the variables uploaded.
+              </p>
+            </div>
+            <button
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity shrink-0"
+              style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', border: 'none', cursor: 'pointer' }}
+            >
+              <FileText style={{ width: 13, height: 13 }} />
+              Sample File
+            </button>
+          </div>
+
+          {/* Drop zone */}
+          <div
+            className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-colors py-12"
+            style={{ borderColor: dragging ? 'var(--primary)' : 'var(--border)', background: dragging ? 'hsl(var(--primary)/0.04)' : 'var(--background)' }}
+            onDragOver={e => { e.preventDefault(); setDragging(true) }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={handleDrop}
+          >
+            <Upload style={{ width: 40, height: 40, color: 'var(--muted-foreground)' }} />
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
+              Drag &amp; Drop file here
+            </span>
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>or</span>
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="px-6 py-2 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', border: 'none', cursor: 'pointer' }}
+            >
+              Browse
+            </button>
+            {uploadedFile && (
+              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>1 file selected</span>
+            )}
+            <input ref={fileRef} type="file" accept=".txt,.csv,.zip,.xls,.xlsx" onChange={handleFileChange} style={{ display: 'none' }} />
+          </div>
+
+          {/* Formats note — red */}
+          <p style={{ fontSize: 'var(--text-xs)', color: '#ef4444', fontWeight: 'var(--font-weight-medium)' }}>
+            .txt, .csv, .zip, .xls and .xlsx formats are Accepted. Size: Upto 200 MB
+          </p>
+
+          {/* File table — shown when a file is selected */}
+          {uploadedFile && fileStatus && (
+            <div className="rounded-lg border border-border overflow-hidden">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr style={{ background: '#dbeafe' }}>
+                    <th className="px-4 py-2.5 text-left" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: '#1d4ed8' }}>File Name</th>
+                    <th className="px-4 py-2.5 text-left" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: '#1d4ed8' }}>Status</th>
+                    <th className="px-4 py-2.5 text-left" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: '#1d4ed8' }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-3">
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}>{uploadedFile}</span>
+                    </td>
+                    <td className="px-4 py-3">
+                      {fileStatus === 'pending' && (
+                        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>Pending</span>
+                      )}
+                      {fileStatus === 'success' && (
+                        <span className="px-2.5 py-0.5 rounded-full" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-medium)', background: '#dcfce7', color: '#15803d' }}>
+                          Success
+                        </span>
+                      )}
+                      {fileStatus === 'failed' && (
+                        <span className="px-2.5 py-0.5 rounded-full" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-medium)', background: '#fee2e2', color: '#b91c1c' }}>
+                          Failed
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <button type="button" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--primary)', display: 'flex' }} title="Preview">
+                          <Eye style={{ width: 16, height: 16 }} />
+                        </button>
+                        <button type="button" style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--primary)', display: 'flex' }} title="Download">
+                          <Download style={{ width: 16, height: 16 }} />
+                        </button>
+                        <button type="button" onClick={handleDeleteFile} style={{ border: 'none', background: 'none', cursor: 'pointer', color: '#ef4444', display: 'flex' }} title="Delete">
+                          <Trash2 style={{ width: 16, height: 16 }} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Remove Duplicate Numbers — checkbox */}
+          <div className="flex flex-col gap-2">
+            <label className="flex items-center gap-2.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={removeDuplicatesChecked}
+                onChange={e => setRemoveDuplicatesChecked(e.target.checked)}
+                style={{ width: 16, height: 16, accentColor: 'var(--primary)', cursor: 'pointer', flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                Remove Duplicate Numbers
+              </span>
+            </label>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', paddingLeft: 24 }}>
+              Selecting this will remove the duplicate mobile numbers from the file uploaded above
+            </p>
+            <div className="flex items-center gap-6" style={{ paddingLeft: 24 }}>
+              {(['single', 'multiple'] as const).map(opt => (
+                <label
+                  key={opt}
+                  className="flex items-center gap-2"
+                  style={{ cursor: removeDuplicatesChecked ? 'pointer' : 'not-allowed', opacity: removeDuplicatesChecked ? 1 : 0.4 }}
+                >
+                  <div
+                    className="w-4 h-4 rounded-full border-2 flex items-center justify-center"
+                    style={{ borderColor: removeDuplicatesChecked && removeDuplicatesScope === opt ? 'var(--primary)' : 'var(--border)' }}
+                    onClick={() => removeDuplicatesChecked && setRemoveDuplicatesScope(opt)}
+                  >
+                    {removeDuplicatesChecked && removeDuplicatesScope === opt && (
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'block' }} />
+                    )}
+                  </div>
+                  <span style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}>
+                    {opt === 'single' ? 'Single file' : 'Across multiple files'}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Upload button — centred */}
+          <div className="flex justify-center">
+            <button
+              type="button"
+              disabled={!uploadedFile || fileStatus === 'success'}
+              onClick={handleUpload}
+              className="px-10 py-2 rounded-lg transition-opacity"
+              style={{
+                fontSize: 'var(--text-sm)',
+                fontWeight: 'var(--font-weight-medium)',
+                background: uploadedFile && fileStatus !== 'success' ? 'var(--primary)' : 'var(--muted)',
+                color: uploadedFile && fileStatus !== 'success' ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
+                border: 'none',
+                cursor: uploadedFile && fileStatus !== 'success' ? 'pointer' : 'not-allowed',
+                opacity: uploadedFile && fileStatus !== 'success' ? 1 : 0.6,
+              }}
+            >
+              Upload
+            </button>
+          </div>
+        </>
+      )}
+
+      {audienceTab === 'segment' && (
+        <div className="flex flex-col items-center justify-center gap-3 py-16 rounded-xl border border-dashed border-border">
+          <Users style={{ width: 36, height: 36, color: 'var(--muted-foreground)' }} />
+          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
+            No segments available. Create a segment in Clarity to use here.
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function CampaignSend() {
   const { metaEnabled } = useFeature()
-  const [activeStep] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const [audienceUploaded, setAudienceUploaded] = useState(false)
   const [campaignName] = useState('smk_waba_v1')
   const [selectedTemplate, setSelectedTemplate] = useState('summer_sale_v1')
   const [multiplier, setMultiplier] = useState(1.0)
@@ -196,7 +442,72 @@ export function CampaignSend() {
             </div>
 
             {/* ── CENTER: Form card ── */}
-            <div className="flex-1 min-w-0 rounded-lg border border-border bg-background">
+            <div className="flex-1 min-w-0 rounded-lg border border-border bg-background overflow-hidden">
+
+              {/* Step 1: Audience */}
+              {activeStep === 1 && (
+                <>
+                  <div className="px-6 py-5 border-b border-border">
+                    <span style={{ fontSize: 'var(--text-base, 1rem)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                      Add Audience
+                    </span>
+                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', marginTop: 4 }}>
+                      Choose one method
+                    </p>
+                  </div>
+                  <div className="px-6 py-5">
+                    <AudienceStep onUploaded={setAudienceUploaded} />
+                  </div>
+                  <div className="px-6 py-4 flex items-center justify-between border-t border-border">
+                    <button
+                      className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                      onClick={() => setActiveStep(0)}
+                    >
+                      <ChevronLeftIcon style={{ width: 14, height: 14 }} />
+                      Back
+                    </button>
+                    <button
+                      className="flex items-center gap-1 transition-opacity"
+                      disabled={!audienceUploaded}
+                      style={{ fontSize: 'var(--text-sm)', color: audienceUploaded ? 'var(--primary)' : 'var(--muted-foreground)', background: 'none', border: 'none', cursor: audienceUploaded ? 'pointer' : 'not-allowed', fontWeight: 'var(--font-weight-medium)', opacity: audienceUploaded ? 1 : 0.5 }}
+                      onClick={() => audienceUploaded && setActiveStep(2)}
+                    >
+                      Next →
+                      <ChevronRight style={{ width: 14, height: 14 }} />
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* Step 2+: placeholder */}
+              {activeStep >= 2 && (
+                <>
+                  <div className="px-6 py-5 border-b border-border">
+                    <span style={{ fontSize: 'var(--text-base, 1rem)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                      {STEPS[activeStep]?.label}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-center justify-center gap-3 px-6 py-16">
+                    <p style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
+                      This step is not part of this prototype.
+                    </p>
+                  </div>
+                  <div className="px-6 py-4 flex items-center justify-start border-t border-border">
+                    <button
+                      className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                      onClick={() => setActiveStep(s => Math.max(0, s - 1))}
+                    >
+                      <ChevronLeftIcon style={{ width: 14, height: 14 }} />
+                      Back
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {/* Step 0: WhatsApp Configuration */}
+              {activeStep === 0 && <>
 
               {/* WABA Name */}
               <div className="px-6 py-5 border-b border-border">
@@ -375,11 +686,14 @@ export function CampaignSend() {
                 <button
                   className="flex items-center gap-1 hover:opacity-80 transition-opacity"
                   style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                  onClick={() => setActiveStep(1)}
                 >
                   Next
                   <ChevronRight style={{ width: 14, height: 14 }} />
                 </button>
               </div>
+
+              </>}
             </div>
 
             {/* ── RIGHT: Preview pane (sticky) ── */}
