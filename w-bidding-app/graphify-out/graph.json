@@ -4,19 +4,6 @@
   "graph": {
     "hyperedges": [
       {
-        "id": "css_var_design_system",
-        "label": "CSS Variable-Backed Design System",
-        "nodes": [
-          "tailwind_config",
-          "postcss_config",
-          "design_token_system"
-        ],
-        "relation": "participate_in",
-        "confidence": "INFERRED",
-        "confidence_score": 0.85,
-        "source_file": "tailwind.config.js"
-      },
-      {
         "id": "radix_ui_wrapper_components",
         "label": "Radix UI Primitive Wrappers",
         "nodes": [
@@ -47,510 +34,472 @@
   },
   "nodes": [
     {
-      "label": "tailwind.config.js",
-      "file_type": "code",
-      "source_file": "tailwind.config.js",
-      "source_location": "L1",
-      "id": "tailwind_config_js",
-      "community": 18,
-      "norm_label": "tailwind.config.js"
-    },
-    {
-      "label": "eslint.config.js",
-      "file_type": "code",
-      "source_file": "eslint.config.js",
-      "source_location": "L1",
-      "id": "eslint_config_js",
-      "community": 19,
-      "norm_label": "eslint.config.js"
-    },
-    {
-      "label": "vite.config.ts",
-      "file_type": "code",
-      "source_file": "vite.config.ts",
-      "source_location": "L1",
-      "id": "vite_config_ts",
-      "community": 20,
-      "norm_label": "vite.config.ts"
-    },
-    {
-      "label": "postcss.config.js",
-      "file_type": "code",
-      "source_file": "postcss.config.js",
-      "source_location": "L1",
-      "id": "postcss_config_js",
-      "community": 21,
-      "norm_label": "postcss.config.js"
-    },
-    {
       "label": "App.tsx",
       "file_type": "code",
-      "source_file": "src/App.tsx",
+      "source_file": "App.tsx",
       "source_location": "L1",
-      "id": "src_app_tsx",
-      "community": 6,
+      "id": "app_tsx",
+      "community": 4,
       "norm_label": "app.tsx"
     },
     {
       "label": "Layout()",
       "file_type": "code",
-      "source_file": "src/App.tsx",
+      "source_file": "App.tsx",
       "source_location": "L10",
       "id": "src_app_layout",
-      "community": 6,
+      "community": 4,
       "norm_label": "layout()"
     },
     {
       "label": "main.tsx",
       "file_type": "code",
-      "source_file": "src/main.tsx",
+      "source_file": "main.tsx",
       "source_location": "L1",
-      "id": "src_main_tsx",
-      "community": 6,
+      "id": "main_tsx",
+      "community": 4,
       "norm_label": "main.tsx"
     },
     {
       "label": "FeatureContext.tsx",
       "file_type": "code",
-      "source_file": "src/context/FeatureContext.tsx",
+      "source_file": "context/FeatureContext.tsx",
       "source_location": "L1",
-      "id": "src_context_featurecontext_tsx",
-      "community": 7,
+      "id": "context_featurecontext_tsx",
+      "community": 5,
       "norm_label": "featurecontext.tsx"
     },
     {
       "label": "FeatureProvider()",
       "file_type": "code",
-      "source_file": "src/context/FeatureContext.tsx",
+      "source_file": "context/FeatureContext.tsx",
       "source_location": "L14",
       "id": "context_featurecontext_featureprovider",
-      "community": 7,
+      "community": 5,
       "norm_label": "featureprovider()"
     },
     {
       "label": "useFeature()",
       "file_type": "code",
-      "source_file": "src/context/FeatureContext.tsx",
+      "source_file": "context/FeatureContext.tsx",
       "source_location": "L25",
       "id": "context_featurecontext_usefeature",
-      "community": 7,
+      "community": 5,
       "norm_label": "usefeature()"
     },
     {
       "label": "DevToolbar.tsx",
       "file_type": "code",
-      "source_file": "src/components/DevToolbar.tsx",
+      "source_file": "components/DevToolbar.tsx",
       "source_location": "L1",
-      "id": "src_components_devtoolbar_tsx",
-      "community": 22,
+      "id": "components_devtoolbar_tsx",
+      "community": 18,
       "norm_label": "devtoolbar.tsx"
     },
     {
       "label": "card.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/card.tsx",
+      "source_file": "components/ui/card.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_card_tsx",
-      "community": 23,
+      "id": "components_ui_card_tsx",
+      "community": 19,
       "norm_label": "card.tsx"
     },
     {
       "label": "label.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/label.tsx",
+      "source_file": "components/ui/label.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_label_tsx",
-      "community": 24,
+      "id": "components_ui_label_tsx",
+      "community": 20,
       "norm_label": "label.tsx"
     },
     {
       "label": "tooltip.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/tooltip.tsx",
+      "source_file": "components/ui/tooltip.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_tooltip_tsx",
-      "community": 25,
+      "id": "components_ui_tooltip_tsx",
+      "community": 21,
       "norm_label": "tooltip.tsx"
     },
     {
       "label": "alert.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/alert.tsx",
+      "source_file": "components/ui/alert.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_alert_tsx",
-      "community": 26,
+      "id": "components_ui_alert_tsx",
+      "community": 22,
       "norm_label": "alert.tsx"
     },
     {
       "label": "switch.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/switch.tsx",
+      "source_file": "components/ui/switch.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_switch_tsx",
-      "community": 27,
+      "id": "components_ui_switch_tsx",
+      "community": 23,
       "norm_label": "switch.tsx"
     },
     {
       "label": "badge.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/badge.tsx",
+      "source_file": "components/ui/badge.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_badge_tsx",
-      "community": 11,
+      "id": "components_ui_badge_tsx",
+      "community": 8,
       "norm_label": "badge.tsx"
     },
     {
       "label": "Badge()",
       "file_type": "code",
-      "source_file": "src/components/ui/badge.tsx",
+      "source_file": "components/ui/badge.tsx",
       "source_location": "L28",
       "id": "ui_badge_badge",
-      "community": 11,
+      "community": 8,
       "norm_label": "badge()"
     },
     {
       "label": "separator.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/separator.tsx",
+      "source_file": "components/ui/separator.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_separator_tsx",
-      "community": 28,
+      "id": "components_ui_separator_tsx",
+      "community": 24,
       "norm_label": "separator.tsx"
     },
     {
       "label": "button.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/button.tsx",
+      "source_file": "components/ui/button.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_button_tsx",
-      "community": 29,
+      "id": "components_ui_button_tsx",
+      "community": 25,
       "norm_label": "button.tsx"
     },
     {
       "label": "select.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/select.tsx",
+      "source_file": "components/ui/select.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_select_tsx",
-      "community": 30,
+      "id": "components_ui_select_tsx",
+      "community": 26,
       "norm_label": "select.tsx"
     },
     {
       "label": "textarea.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/textarea.tsx",
+      "source_file": "components/ui/textarea.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_textarea_tsx",
-      "community": 31,
+      "id": "components_ui_textarea_tsx",
+      "community": 27,
       "norm_label": "textarea.tsx"
     },
     {
       "label": "input.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/input.tsx",
+      "source_file": "components/ui/input.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_input_tsx",
-      "community": 32,
+      "id": "components_ui_input_tsx",
+      "community": 28,
       "norm_label": "input.tsx"
     },
     {
       "label": "skeleton.tsx",
       "file_type": "code",
-      "source_file": "src/components/ui/skeleton.tsx",
+      "source_file": "components/ui/skeleton.tsx",
       "source_location": "L1",
-      "id": "src_components_ui_skeleton_tsx",
-      "community": 12,
+      "id": "components_ui_skeleton_tsx",
+      "community": 9,
       "norm_label": "skeleton.tsx"
     },
     {
       "label": "Skeleton()",
       "file_type": "code",
-      "source_file": "src/components/ui/skeleton.tsx",
+      "source_file": "components/ui/skeleton.tsx",
       "source_location": "L3",
       "id": "ui_skeleton_skeleton",
-      "community": 12,
+      "community": 9,
       "norm_label": "skeleton()"
+    },
+    {
+      "label": "WhatsAppPhoneMockup.tsx",
+      "file_type": "code",
+      "source_file": "components/layout/WhatsAppPhoneMockup.tsx",
+      "source_location": "L1",
+      "id": "components_layout_whatsappphonemockup_tsx",
+      "community": 29,
+      "norm_label": "whatsappphonemockup.tsx"
     },
     {
       "label": "Sidebar.tsx",
       "file_type": "code",
-      "source_file": "src/components/layout/Sidebar.tsx",
+      "source_file": "components/layout/Sidebar.tsx",
       "source_location": "L1",
-      "id": "src_components_layout_sidebar_tsx",
-      "community": 33,
+      "id": "components_layout_sidebar_tsx",
+      "community": 30,
       "norm_label": "sidebar.tsx"
     },
     {
       "label": "TopNav.tsx",
       "file_type": "code",
-      "source_file": "src/components/layout/TopNav.tsx",
+      "source_file": "components/layout/TopNav.tsx",
       "source_location": "L1",
-      "id": "src_components_layout_topnav_tsx",
-      "community": 34,
+      "id": "components_layout_topnav_tsx",
+      "community": 31,
       "norm_label": "topnav.tsx"
     },
     {
       "label": "BidAmountInput.tsx",
       "file_type": "code",
-      "source_file": "src/components/bidding/BidAmountInput.tsx",
+      "source_file": "components/bidding/BidAmountInput.tsx",
       "source_location": "L1",
-      "id": "src_components_bidding_bidamountinput_tsx",
-      "community": 13,
+      "id": "components_bidding_bidamountinput_tsx",
+      "community": 10,
       "norm_label": "bidamountinput.tsx"
     },
     {
       "label": "handleChange()",
       "file_type": "code",
-      "source_file": "src/components/bidding/BidAmountInput.tsx",
-      "source_location": "L21",
+      "source_file": "components/bidding/BidAmountInput.tsx",
+      "source_location": "L18",
       "id": "bidding_bidamountinput_handlechange",
-      "community": 13,
+      "community": 10,
       "norm_label": "handlechange()"
     },
     {
       "label": "BiddingToggle.tsx",
       "file_type": "code",
-      "source_file": "src/components/bidding/BiddingToggle.tsx",
+      "source_file": "components/bidding/BiddingToggle.tsx",
       "source_location": "L1",
-      "id": "src_components_bidding_biddingtoggle_tsx",
-      "community": 8,
+      "id": "components_bidding_biddingtoggle_tsx",
+      "community": 6,
       "norm_label": "biddingtoggle.tsx"
     },
     {
       "label": "handleToggle()",
       "file_type": "code",
-      "source_file": "src/components/bidding/BiddingToggle.tsx",
-      "source_location": "L12",
+      "source_file": "components/bidding/BiddingToggle.tsx",
+      "source_location": "L14",
       "id": "bidding_biddingtoggle_handletoggle",
-      "community": 8,
+      "community": 6,
       "norm_label": "handletoggle()"
     },
     {
       "label": "handleBidChange()",
       "file_type": "code",
-      "source_file": "src/components/bidding/BiddingToggle.tsx",
+      "source_file": "components/bidding/BiddingToggle.tsx",
       "source_location": "L19",
       "id": "bidding_biddingtoggle_handlebidchange",
-      "community": 8,
+      "community": 6,
       "norm_label": "handlebidchange()"
     },
     {
       "label": "MultiplierSlider.tsx",
       "file_type": "code",
-      "source_file": "src/components/bidding/MultiplierSlider.tsx",
+      "source_file": "components/bidding/MultiplierSlider.tsx",
       "source_location": "L1",
-      "id": "src_components_bidding_multiplierslider_tsx",
-      "community": 14,
+      "id": "components_bidding_multiplierslider_tsx",
+      "community": 11,
       "norm_label": "multiplierslider.tsx"
     },
     {
       "label": "handleChange()",
       "file_type": "code",
-      "source_file": "src/components/bidding/MultiplierSlider.tsx",
+      "source_file": "components/bidding/MultiplierSlider.tsx",
       "source_location": "L15",
       "id": "bidding_multiplierslider_handlechange",
-      "community": 14,
+      "community": 11,
       "norm_label": "handlechange()"
     },
     {
       "label": "ReachEstimationWidget.tsx",
       "file_type": "code",
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
+      "source_file": "components/bidding/ReachEstimationWidget.tsx",
       "source_location": "L1",
-      "id": "src_components_bidding_reachestimationwidget_tsx",
-      "community": 35,
+      "id": "components_bidding_reachestimationwidget_tsx",
+      "community": 7,
       "norm_label": "reachestimationwidget.tsx"
+    },
+    {
+      "label": "handleCheckMetrics()",
+      "file_type": "code",
+      "source_file": "components/bidding/ReachEstimationWidget.tsx",
+      "source_location": "L34",
+      "id": "bidding_reachestimationwidget_handlecheckmetrics",
+      "community": 7,
+      "norm_label": "handlecheckmetrics()"
+    },
+    {
+      "label": "handleIntervalChange()",
+      "file_type": "code",
+      "source_file": "components/bidding/ReachEstimationWidget.tsx",
+      "source_location": "L46",
+      "id": "bidding_reachestimationwidget_handleintervalchange",
+      "community": 7,
+      "norm_label": "handleintervalchange()"
     },
     {
       "label": "MultiplierSummary.tsx",
       "file_type": "code",
-      "source_file": "src/components/bidding/MultiplierSummary.tsx",
+      "source_file": "components/bidding/MultiplierSummary.tsx",
       "source_location": "L1",
-      "id": "src_components_bidding_multipliersummary_tsx",
-      "community": 36,
+      "id": "components_bidding_multipliersummary_tsx",
+      "community": 12,
       "norm_label": "multipliersummary.tsx"
+    },
+    {
+      "label": "fmtBid()",
+      "file_type": "code",
+      "source_file": "components/bidding/MultiplierSummary.tsx",
+      "source_location": "L6",
+      "id": "bidding_multipliersummary_fmtbid",
+      "community": 12,
+      "norm_label": "fmtbid()"
     },
     {
       "label": "utils.ts",
       "file_type": "code",
-      "source_file": "src/lib/utils.ts",
+      "source_file": "lib/utils.ts",
       "source_location": "L1",
-      "id": "src_lib_utils_ts",
-      "community": 15,
+      "id": "lib_utils_ts",
+      "community": 13,
       "norm_label": "utils.ts"
     },
     {
       "label": "cn()",
       "file_type": "code",
-      "source_file": "src/lib/utils.ts",
+      "source_file": "lib/utils.ts",
       "source_location": "L4",
       "id": "lib_utils_cn",
-      "community": 15,
+      "community": 13,
       "norm_label": "cn()"
+    },
+    {
+      "label": "format.ts",
+      "file_type": "code",
+      "source_file": "lib/format.ts",
+      "source_location": "L1",
+      "id": "lib_format_ts",
+      "community": 14,
+      "norm_label": "format.ts"
+    },
+    {
+      "label": "fmtINR()",
+      "file_type": "code",
+      "source_file": "lib/format.ts",
+      "source_location": "L3",
+      "id": "lib_format_fmtinr",
+      "community": 14,
+      "norm_label": "fmtinr()"
+    },
+    {
+      "label": "constants.ts",
+      "file_type": "code",
+      "source_file": "lib/constants.ts",
+      "source_location": "L1",
+      "id": "lib_constants_ts",
+      "community": 32,
+      "norm_label": "constants.ts"
     },
     {
       "label": "Reports.tsx",
       "file_type": "code",
-      "source_file": "src/pages/Reports.tsx",
+      "source_file": "pages/Reports.tsx",
       "source_location": "L1",
-      "id": "src_pages_reports_tsx",
-      "community": 9,
+      "id": "pages_reports_tsx",
+      "community": 15,
       "norm_label": "reports.tsx"
-    },
-    {
-      "label": "formatCost()",
-      "file_type": "code",
-      "source_file": "src/pages/Reports.tsx",
-      "source_location": "L35",
-      "id": "pages_reports_formatcost",
-      "community": 9,
-      "norm_label": "formatcost()"
     },
     {
       "label": "handleSort()",
       "file_type": "code",
-      "source_file": "src/pages/Reports.tsx",
-      "source_location": "L46",
+      "source_file": "pages/Reports.tsx",
+      "source_location": "L73",
       "id": "pages_reports_handlesort",
-      "community": 9,
+      "community": 15,
       "norm_label": "handlesort()"
     },
     {
       "label": "CampaignSend.tsx",
       "file_type": "code",
-      "source_file": "src/pages/CampaignSend.tsx",
+      "source_file": "pages/CampaignSend.tsx",
       "source_location": "L1",
-      "id": "src_pages_campaignsend_tsx",
-      "community": 37,
+      "id": "pages_campaignsend_tsx",
+      "community": 33,
       "norm_label": "campaignsend.tsx"
     },
     {
       "label": "TemplateList.tsx",
       "file_type": "code",
-      "source_file": "src/pages/TemplateList.tsx",
+      "source_file": "pages/TemplateList.tsx",
       "source_location": "L1",
-      "id": "src_pages_templatelist_tsx",
-      "community": 3,
+      "id": "pages_templatelist_tsx",
+      "community": 2,
       "norm_label": "templatelist.tsx"
     },
     {
       "label": "onClickOutside()",
       "file_type": "code",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L54",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L64",
       "id": "pages_templatelist_onclickoutside",
-      "community": 3,
+      "community": 2,
       "norm_label": "onclickoutside()"
     },
     {
       "label": "handleChange()",
       "file_type": "code",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L106",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L115",
       "id": "pages_templatelist_handlechange",
-      "community": 3,
+      "community": 2,
       "norm_label": "handlechange()"
     },
     {
       "label": "handleSave()",
       "file_type": "code",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L113",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L122",
       "id": "pages_templatelist_handlesave",
-      "community": 3,
+      "community": 2,
       "norm_label": "handlesave()"
     },
     {
       "label": "handleSaveBid()",
       "file_type": "code",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L204",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L259",
       "id": "pages_templatelist_handlesavebid",
-      "community": 3,
+      "community": 2,
       "norm_label": "handlesavebid()"
+    },
+    {
+      "label": "pct()",
+      "file_type": "code",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L272",
+      "id": "pages_templatelist_pct",
+      "community": 2,
+      "norm_label": "pct()"
     },
     {
       "label": "TemplateCreation.tsx",
       "file_type": "code",
-      "source_file": "src/pages/TemplateCreation.tsx",
+      "source_file": "pages/TemplateCreation.tsx",
       "source_location": "L1",
-      "id": "src_pages_templatecreation_tsx",
+      "id": "pages_templatecreation_tsx",
       "community": 16,
       "norm_label": "templatecreation.tsx"
     },
     {
       "label": "handleSubmit()",
       "file_type": "code",
-      "source_file": "src/pages/TemplateCreation.tsx",
-      "source_location": "L37",
+      "source_file": "pages/TemplateCreation.tsx",
+      "source_location": "L40",
       "id": "pages_templatecreation_handlesubmit",
       "community": 16,
       "norm_label": "handlesubmit()"
-    },
-    {
-      "label": "tailwind.config.js",
-      "file_type": "code",
-      "source_file": "tailwind.config.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "tailwind_config",
-      "community": 10,
-      "norm_label": "tailwind.config.js"
-    },
-    {
-      "label": "CSS Variable Design Token System",
-      "file_type": "rationale",
-      "source_file": "tailwind.config.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "design_token_system",
-      "community": 0,
-      "norm_label": "css variable design token system"
-    },
-    {
-      "label": "eslint.config.js",
-      "file_type": "code",
-      "source_file": "eslint.config.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "eslint_config",
-      "community": 38,
-      "norm_label": "eslint.config.js"
-    },
-    {
-      "label": "vite.config.ts",
-      "file_type": "code",
-      "source_file": "vite.config.ts",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "vite_config",
-      "community": 10,
-      "norm_label": "vite.config.ts"
-    },
-    {
-      "label": "postcss.config.js",
-      "file_type": "code",
-      "source_file": "postcss.config.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "postcss_config",
-      "community": 10,
-      "norm_label": "postcss.config.js"
     },
     {
       "label": "main.tsx Entry Point",
@@ -562,7 +511,7 @@
       "author": null,
       "contributor": null,
       "id": "main_main",
-      "community": 39,
+      "community": 34,
       "norm_label": "main.tsx entry point"
     },
     {
@@ -575,7 +524,7 @@
       "author": null,
       "contributor": null,
       "id": "featurecontext_featurecontext",
-      "community": 5,
+      "community": 3,
       "norm_label": "featurecontext"
     },
     {
@@ -588,7 +537,7 @@
       "author": null,
       "contributor": null,
       "id": "featurecontext_featureprovider",
-      "community": 5,
+      "community": 3,
       "norm_label": "featureprovider"
     },
     {
@@ -601,7 +550,7 @@
       "author": null,
       "contributor": null,
       "id": "featurecontext_usefeature",
-      "community": 5,
+      "community": 3,
       "norm_label": "usefeature"
     },
     {
@@ -614,7 +563,7 @@
       "author": null,
       "contributor": null,
       "id": "featurecontext_reachestimatestate",
-      "community": 5,
+      "community": 3,
       "norm_label": "reachestimatestate"
     },
     {
@@ -640,7 +589,7 @@
       "author": null,
       "contributor": null,
       "id": "card_cardheader",
-      "community": 40,
+      "community": 35,
       "norm_label": "cardheader"
     },
     {
@@ -653,7 +602,7 @@
       "author": null,
       "contributor": null,
       "id": "card_cardtitle",
-      "community": 41,
+      "community": 36,
       "norm_label": "cardtitle"
     },
     {
@@ -666,7 +615,7 @@
       "author": null,
       "contributor": null,
       "id": "card_carddescription",
-      "community": 42,
+      "community": 37,
       "norm_label": "carddescription"
     },
     {
@@ -679,7 +628,7 @@
       "author": null,
       "contributor": null,
       "id": "card_cardcontent",
-      "community": 43,
+      "community": 38,
       "norm_label": "cardcontent"
     },
     {
@@ -692,7 +641,7 @@
       "author": null,
       "contributor": null,
       "id": "card_cardfooter",
-      "community": 44,
+      "community": 39,
       "norm_label": "cardfooter"
     },
     {
@@ -731,7 +680,7 @@
       "author": null,
       "contributor": null,
       "id": "tooltip_tooltipprovider",
-      "community": 45,
+      "community": 40,
       "norm_label": "tooltipprovider"
     },
     {
@@ -744,7 +693,7 @@
       "author": null,
       "contributor": null,
       "id": "tooltip_tooltiptrigger",
-      "community": 46,
+      "community": 41,
       "norm_label": "tooltiptrigger"
     },
     {
@@ -757,7 +706,7 @@
       "author": null,
       "contributor": null,
       "id": "tooltip_tooltipcontent",
-      "community": 47,
+      "community": 42,
       "norm_label": "tooltipcontent"
     },
     {
@@ -783,7 +732,7 @@
       "author": null,
       "contributor": null,
       "id": "alert_alerttitle",
-      "community": 48,
+      "community": 43,
       "norm_label": "alerttitle"
     },
     {
@@ -796,7 +745,7 @@
       "author": null,
       "contributor": null,
       "id": "alert_alertdescription",
-      "community": 49,
+      "community": 44,
       "norm_label": "alertdescription"
     },
     {
@@ -965,7 +914,7 @@
       "author": null,
       "contributor": null,
       "id": "sidebar_sidebar",
-      "community": 4,
+      "community": 1,
       "norm_label": "sidebar"
     },
     {
@@ -978,7 +927,7 @@
       "author": null,
       "contributor": null,
       "id": "sidebar_navitemrow",
-      "community": 4,
+      "community": 1,
       "norm_label": "navitemrow"
     },
     {
@@ -991,7 +940,7 @@
       "author": null,
       "contributor": null,
       "id": "sidebar_navitem",
-      "community": 4,
+      "community": 1,
       "norm_label": "navitem"
     },
     {
@@ -1004,7 +953,7 @@
       "author": null,
       "contributor": null,
       "id": "topnav_topnav",
-      "community": 50,
+      "community": 45,
       "norm_label": "topnav"
     },
     {
@@ -1017,99 +966,8 @@
       "author": null,
       "contributor": null,
       "id": "topnav_crumb",
-      "community": 51,
+      "community": 46,
       "norm_label": "crumb"
-    },
-    {
-      "label": "MultiplierSlider",
-      "file_type": "code",
-      "source_file": "src/components/bidding/MultiplierSlider.tsx",
-      "source_location": "12",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "multiplierslider_multiplierslider",
-      "community": 1,
-      "norm_label": "multiplierslider"
-    },
-    {
-      "label": "ReachEstimationWidget",
-      "file_type": "code",
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "42",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "reachestimationwidget_reachestimationwidget",
-      "community": 1,
-      "norm_label": "reachestimationwidget"
-    },
-    {
-      "label": "MOCK_RESULTS (reach/delivery data)",
-      "file_type": "code",
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "28",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "reachestimationwidget_mock_results",
-      "community": 1,
-      "norm_label": "mock_results (reach/delivery data)"
-    },
-    {
-      "label": "useFeature (FeatureContext)",
-      "file_type": "code",
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "43",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "reachestimationwidget_featurecontext",
-      "community": 1,
-      "norm_label": "usefeature (featurecontext)"
-    },
-    {
-      "label": "displayState (reach estimation state machine)",
-      "file_type": "code",
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "47",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "reachestimationwidget_displaystate",
-      "community": 1,
-      "norm_label": "displaystate (reach estimation state machine)"
-    },
-    {
-      "label": "MultiplierSummary",
-      "file_type": "code",
-      "source_file": "src/components/bidding/MultiplierSummary.tsx",
-      "source_location": "7",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "multipliersummary_multipliersummary",
-      "community": 1,
-      "norm_label": "multipliersummary"
-    },
-    {
-      "label": "effectiveBid (baseBid * multiplier)",
-      "file_type": "code",
-      "source_file": "src/components/bidding/MultiplierSummary.tsx",
-      "source_location": "8",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "multipliersummary_effectivebid",
-      "community": 1,
-      "norm_label": "effectivebid (basebid * multiplier)"
     },
     {
       "label": "cn (class merging utility)",
@@ -1125,162 +983,6 @@
       "norm_label": "cn (class merging utility)"
     },
     {
-      "label": "index.html (app entry point)",
-      "file_type": "document",
-      "source_file": "index.html",
-      "source_location": "1",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "index_html",
-      "community": 4,
-      "norm_label": "index.html (app entry point)"
-    },
-    {
-      "label": "React + TypeScript + Vite template",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "1",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "readme_react_vite_template",
-      "community": 4,
-      "norm_label": "react + typescript + vite template"
-    },
-    {
-      "label": "icons.svg \u2014 SVG sprite sheet containing 6 icon symbols for UI use",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "icons_svg",
-      "community": 2,
-      "norm_label": "icons.svg \u2014 svg sprite sheet containing 6 icon symbols for ui use"
-    },
-    {
-      "label": "Bluesky social platform icon (butterfly logo, filled dark #08060d)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "#bluesky-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "bluesky_icon",
-      "community": 2,
-      "norm_label": "bluesky social platform icon (butterfly logo, filled dark #08060d)"
-    },
-    {
-      "label": "Discord community/chat platform icon (controller-like logo, filled dark #08060d)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "#discord-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "discord_icon",
-      "community": 2,
-      "norm_label": "discord community/chat platform icon (controller-like logo, filled dark #08060d)"
-    },
-    {
-      "label": "Documentation icon (document with code chevrons, purple stroke #aa3bff)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "#documentation-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "documentation_icon",
-      "community": 2,
-      "norm_label": "documentation icon (document with code chevrons, purple stroke #aa3bff)"
-    },
-    {
-      "label": "GitHub source control platform icon (Octocat silhouette, filled dark #08060d)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "#github-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "github_icon",
-      "community": 2,
-      "norm_label": "github source control platform icon (octocat silhouette, filled dark #08060d)"
-    },
-    {
-      "label": "Social/community icon (person silhouette with star/rating badge, purple stroke #aa3bff)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "#social-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "social_icon",
-      "community": 2,
-      "norm_label": "social/community icon (person silhouette with star/rating badge, purple stroke #aa3bff)"
-    },
-    {
-      "label": "X (formerly Twitter) social platform icon (X letterform, filled dark #08060d)",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": "#x-icon",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "x_icon",
-      "community": 2,
-      "norm_label": "x (formerly twitter) social platform icon (x letterform, filled dark #08060d)"
-    },
-    {
-      "label": "Group of social platform icons: Bluesky, Discord, GitHub, X \u2014 filled dark style",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "social_platform_icons_group",
-      "community": 2,
-      "norm_label": "group of social platform icons: bluesky, discord, github, x \u2014 filled dark style"
-    },
-    {
-      "label": "Group of UI/functional icons: Documentation, Social profile \u2014 purple outline style",
-      "file_type": "image",
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "ui_functional_icons_group",
-      "community": 2,
-      "norm_label": "group of ui/functional icons: documentation, social profile \u2014 purple outline style"
-    },
-    {
-      "label": "Favicon SVG - Lightning Bolt / Zap Shape, purple gradient with neon glow",
-      "file_type": "image",
-      "source_file": "public/favicon.svg",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "favicon_svg",
-      "community": 52,
-      "norm_label": "favicon svg - lightning bolt / zap shape, purple gradient with neon glow"
-    },
-    {
       "label": "Hero Illustration: Isometric 3D layered graphic with purple/violet gradient",
       "file_type": "image",
       "source_file": "src/assets/hero.png",
@@ -1290,7 +992,7 @@
       "author": null,
       "contributor": null,
       "id": "hero_illustration",
-      "community": 53,
+      "community": 47,
       "norm_label": "hero illustration: isometric 3d layered graphic with purple/violet gradient"
     },
     {
@@ -1329,7 +1031,7 @@
       "author": null,
       "contributor": null,
       "id": "react_logo_svg",
-      "community": 54,
+      "community": 48,
       "norm_label": "react logo svg (atom icon, cyan #00d8ff)"
     }
   ],
@@ -1337,10 +1039,10 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/App.tsx",
+      "source_file": "App.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "source": "src_app_tsx",
+      "source": "app_tsx",
       "target": "src_app_layout",
       "confidence_score": 1.0
     },
@@ -1348,252 +1050,212 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "src/main.tsx",
+      "source_file": "main.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "src_main_tsx",
-      "target": "src_app_tsx",
+      "source": "main_tsx",
+      "target": "app_tsx",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/context/FeatureContext.tsx",
+      "source_file": "context/FeatureContext.tsx",
       "source_location": "L14",
       "weight": 1.0,
-      "source": "src_context_featurecontext_tsx",
+      "source": "context_featurecontext_tsx",
       "target": "context_featurecontext_featureprovider",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/context/FeatureContext.tsx",
+      "source_file": "context/FeatureContext.tsx",
       "source_location": "L25",
       "weight": 1.0,
-      "source": "src_context_featurecontext_tsx",
+      "source": "context_featurecontext_tsx",
       "target": "context_featurecontext_usefeature",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/badge.tsx",
+      "source_file": "components/ui/badge.tsx",
       "source_location": "L28",
       "weight": 1.0,
-      "source": "src_components_ui_badge_tsx",
+      "source": "components_ui_badge_tsx",
       "target": "ui_badge_badge",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/ui/skeleton.tsx",
+      "source_file": "components/ui/skeleton.tsx",
       "source_location": "L3",
       "weight": 1.0,
-      "source": "src_components_ui_skeleton_tsx",
+      "source": "components_ui_skeleton_tsx",
       "target": "ui_skeleton_skeleton",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/bidding/BidAmountInput.tsx",
-      "source_location": "L21",
+      "source_file": "components/bidding/BidAmountInput.tsx",
+      "source_location": "L18",
       "weight": 1.0,
-      "source": "src_components_bidding_bidamountinput_tsx",
+      "source": "components_bidding_bidamountinput_tsx",
       "target": "bidding_bidamountinput_handlechange",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/bidding/BiddingToggle.tsx",
-      "source_location": "L12",
+      "source_file": "components/bidding/BiddingToggle.tsx",
+      "source_location": "L14",
       "weight": 1.0,
-      "source": "src_components_bidding_biddingtoggle_tsx",
+      "source": "components_bidding_biddingtoggle_tsx",
       "target": "bidding_biddingtoggle_handletoggle",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/bidding/BiddingToggle.tsx",
+      "source_file": "components/bidding/BiddingToggle.tsx",
       "source_location": "L19",
       "weight": 1.0,
-      "source": "src_components_bidding_biddingtoggle_tsx",
+      "source": "components_bidding_biddingtoggle_tsx",
       "target": "bidding_biddingtoggle_handlebidchange",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/components/bidding/MultiplierSlider.tsx",
+      "source_file": "components/bidding/MultiplierSlider.tsx",
       "source_location": "L15",
       "weight": 1.0,
-      "source": "src_components_bidding_multiplierslider_tsx",
+      "source": "components_bidding_multiplierslider_tsx",
       "target": "bidding_multiplierslider_handlechange",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/utils.ts",
+      "source_file": "components/bidding/ReachEstimationWidget.tsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "components_bidding_reachestimationwidget_tsx",
+      "target": "bidding_reachestimationwidget_handlecheckmetrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/bidding/ReachEstimationWidget.tsx",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "components_bidding_reachestimationwidget_tsx",
+      "target": "bidding_reachestimationwidget_handleintervalchange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/bidding/MultiplierSummary.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "components_bidding_multipliersummary_tsx",
+      "target": "bidding_multipliersummary_fmtbid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/utils.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "src_lib_utils_ts",
+      "source": "lib_utils_ts",
       "target": "lib_utils_cn",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/Reports.tsx",
-      "source_location": "L35",
+      "source_file": "lib/format.ts",
+      "source_location": "L3",
       "weight": 1.0,
-      "source": "src_pages_reports_tsx",
-      "target": "pages_reports_formatcost",
+      "source": "lib_format_ts",
+      "target": "lib_format_fmtinr",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/Reports.tsx",
-      "source_location": "L46",
+      "source_file": "pages/Reports.tsx",
+      "source_location": "L73",
       "weight": 1.0,
-      "source": "src_pages_reports_tsx",
+      "source": "pages_reports_tsx",
       "target": "pages_reports_handlesort",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L54",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L64",
       "weight": 1.0,
-      "source": "src_pages_templatelist_tsx",
+      "source": "pages_templatelist_tsx",
       "target": "pages_templatelist_onclickoutside",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L106",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L115",
       "weight": 1.0,
-      "source": "src_pages_templatelist_tsx",
+      "source": "pages_templatelist_tsx",
       "target": "pages_templatelist_handlechange",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L113",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L122",
       "weight": 1.0,
-      "source": "src_pages_templatelist_tsx",
+      "source": "pages_templatelist_tsx",
       "target": "pages_templatelist_handlesave",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/TemplateList.tsx",
-      "source_location": "L204",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L259",
       "weight": 1.0,
-      "source": "src_pages_templatelist_tsx",
+      "source": "pages_templatelist_tsx",
       "target": "pages_templatelist_handlesavebid",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "src/pages/TemplateCreation.tsx",
-      "source_location": "L37",
+      "source_file": "pages/TemplateList.tsx",
+      "source_location": "L272",
       "weight": 1.0,
-      "source": "src_pages_templatecreation_tsx",
-      "target": "pages_templatecreation_handlesubmit",
+      "source": "pages_templatelist_tsx",
+      "target": "pages_templatelist_pct",
       "confidence_score": 1.0
     },
     {
-      "relation": "rationale_for",
+      "relation": "contains",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tailwind.config.js",
-      "source_location": "7-48",
+      "source_file": "pages/TemplateCreation.tsx",
+      "source_location": "L40",
       "weight": 1.0,
-      "source": "design_token_system",
-      "target": "tailwind_config"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "postcss.config.js",
-      "source_location": "3",
-      "weight": 1.0,
-      "source": "postcss_config",
-      "target": "tailwind_config"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/components/ui/card.tsx",
-      "source_location": "8",
-      "weight": 0.95,
-      "source": "card_card",
-      "target": "design_token_system"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/components/ui/alert.tsx",
-      "source_location": "5-19",
-      "weight": 0.95,
-      "source": "alert_alert",
-      "target": "design_token_system"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/components/ui/switch.tsx",
-      "source_location": "11",
-      "weight": 0.95,
-      "source": "switch_switch",
-      "target": "design_token_system"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/components/ui/badge.tsx",
-      "source_location": "5-22",
-      "weight": 0.95,
-      "source": "badge_badge",
-      "target": "design_token_system"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "src/components/ui/button.tsx",
-      "source_location": "7-29",
-      "weight": 0.95,
-      "source": "button_button",
-      "target": "design_token_system"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
-      "source_file": "vite.config.ts",
-      "source_location": null,
-      "weight": 0.75,
-      "source": "vite_config",
-      "target": "postcss_config"
+      "source": "pages_templatecreation_tsx",
+      "target": "pages_templatecreation_handlesubmit",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -1789,16 +1451,6 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "96",
-      "weight": 1.0,
-      "source": "reachestimationwidget_reachestimationwidget",
-      "target": "select_select"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/components/ui/textarea.tsx",
       "source_location": "10",
       "weight": 1.0,
@@ -1839,31 +1491,11 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "118",
-      "weight": 1.0,
-      "source": "reachestimationwidget_reachestimationwidget",
-      "target": "skeleton_skeleton"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "src/components/layout/Sidebar.tsx",
       "source_location": "154",
       "weight": 1.0,
       "source": "sidebar_sidebar",
       "target": "sidebar_navitemrow"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.65,
-      "source_file": "index.html",
-      "source_location": null,
-      "weight": 0.65,
-      "source": "index_html",
-      "target": "sidebar_sidebar"
     },
     {
       "relation": "calls",
@@ -1886,276 +1518,6 @@
       "target": "sidebar_navitem"
     },
     {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/MultiplierSlider.tsx",
-      "source_location": "24",
-      "weight": 1.0,
-      "source": "multiplierslider_multiplierslider",
-      "target": "utils_cn"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "src/components/bidding/MultiplierSlider.tsx",
-      "source_location": null,
-      "weight": 0.85,
-      "source": "multiplierslider_multiplierslider",
-      "target": "multipliersummary_multipliersummary"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "86",
-      "weight": 1.0,
-      "source": "reachestimationwidget_reachestimationwidget",
-      "target": "utils_cn"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "43",
-      "weight": 1.0,
-      "source": "reachestimationwidget_reachestimationwidget",
-      "target": "reachestimationwidget_featurecontext"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "59",
-      "weight": 1.0,
-      "source": "reachestimationwidget_reachestimationwidget",
-      "target": "reachestimationwidget_mock_results"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "47",
-      "weight": 1.0,
-      "source": "reachestimationwidget_reachestimationwidget",
-      "target": "reachestimationwidget_displaystate"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/ReachEstimationWidget.tsx",
-      "source_location": "43",
-      "weight": 1.0,
-      "source": "reachestimationwidget_featurecontext",
-      "target": "reachestimationwidget_displaystate"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/bidding/MultiplierSummary.tsx",
-      "source_location": "8",
-      "weight": 1.0,
-      "source": "multipliersummary_multipliersummary",
-      "target": "multipliersummary_effectivebid"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
-      "source_file": "README.md",
-      "source_location": null,
-      "weight": 0.75,
-      "source": "readme_react_vite_template",
-      "target": "index_html"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "#bluesky-icon",
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "bluesky_icon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "#discord-icon",
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "discord_icon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "#documentation-icon",
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "documentation_icon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "#github-icon",
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "github_icon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "#social-icon",
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "social_icon"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "public/icons.svg",
-      "source_location": "#x-icon",
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "x_icon"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "social_platform_icons_group"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "icons_svg",
-      "target": "ui_functional_icons_group"
-    },
-    {
-      "relation": "belongs_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": "#bluesky-icon",
-      "weight": 1.0,
-      "source": "bluesky_icon",
-      "target": "social_platform_icons_group"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "bluesky_icon",
-      "target": "x_icon"
-    },
-    {
-      "relation": "belongs_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": "#discord-icon",
-      "weight": 1.0,
-      "source": "discord_icon",
-      "target": "social_platform_icons_group"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "discord_icon",
-      "target": "social_icon"
-    },
-    {
-      "relation": "belongs_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": "#documentation-icon",
-      "weight": 1.0,
-      "source": "documentation_icon",
-      "target": "ui_functional_icons_group"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.65,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "github_icon",
-      "target": "documentation_icon"
-    },
-    {
-      "relation": "belongs_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": "#github-icon",
-      "weight": 1.0,
-      "source": "github_icon",
-      "target": "social_platform_icons_group"
-    },
-    {
-      "relation": "belongs_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "public/icons.svg",
-      "source_location": "#social-icon",
-      "weight": 1.0,
-      "source": "social_icon",
-      "target": "ui_functional_icons_group"
-    },
-    {
-      "relation": "belongs_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": "#x-icon",
-      "weight": 1.0,
-      "source": "x_icon",
-      "target": "social_platform_icons_group"
-    },
-    {
-      "relation": "visually_distinct_from",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "public/icons.svg",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "social_platform_icons_group",
-      "target": "ui_functional_icons_group"
-    },
-    {
       "relation": "references",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
@@ -2167,19 +1529,6 @@
     }
   ],
   "hyperedges": [
-    {
-      "id": "css_var_design_system",
-      "label": "CSS Variable-Backed Design System",
-      "nodes": [
-        "tailwind_config",
-        "postcss_config",
-        "design_token_system"
-      ],
-      "relation": "participate_in",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "tailwind.config.js"
-    },
     {
       "id": "radix_ui_wrapper_components",
       "label": "Radix UI Primitive Wrappers",
@@ -2207,5 +1556,6 @@
       "confidence_score": 0.95,
       "source_file": "src/components/ui/button.tsx"
     }
-  ]
+  ],
+  "built_at_commit": "83b8e8bd305cec0930117c1662ee340aa28ac70e"
 }

@@ -1,20 +1,4 @@
 {
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/tailwind.config.js": {
-    "mtime": 1777970565.1653318,
-    "hash": "9abc15ff30f2a7263035c2c3953752a1"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/eslint.config.js": {
-    "mtime": 1777970120.226034,
-    "hash": "0355276bc79439afe3c53e3a2470ca1e"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/vite.config.ts": {
-    "mtime": 1777970565.5050092,
-    "hash": "6470b0ad57e763c6a72b37cac4f25733"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/postcss.config.js": {
-    "mtime": 1777970464.2110348,
-    "hash": "ef3ba2a81ba19f8ea5ddf625521e96f0"
-  },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/App.tsx": {
     "mtime": 1777989370.4498105,
     "hash": "4a9ab707b3a90c2a8adb806c650cb0cd"
@@ -79,6 +63,10 @@
     "mtime": 1777970644.3374524,
     "hash": "6bc01bd384badcd939c9e68a8c77448b"
   },
+  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/layout/WhatsAppPhoneMockup.tsx": {
+    "mtime": 1778224560.4847753,
+    "hash": "af7688d29142009e980d047ddea742ee"
+  },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/layout/Sidebar.tsx": {
     "mtime": 1777970684.6868646,
     "hash": "6791236f9b420bbb3c2d7bcfbf020c51"
@@ -88,60 +76,52 @@
     "hash": "06862ac548b314702561d00e231c163c"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/bidding/BidAmountInput.tsx": {
-    "mtime": 1777989560.7212107,
-    "hash": "708961c8252b4c7e6236f40ddaccf5c2"
+    "mtime": 1778585464.6699574,
+    "hash": "402b8858e23744527600240efe33e923"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/bidding/BiddingToggle.tsx": {
-    "mtime": 1777989564.2035244,
-    "hash": "72d726af2cd8fa336f44e33971e4a63e"
+    "mtime": 1778585589.247666,
+    "hash": "28439cfbc487f5cd400c727b67b3e547"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/bidding/MultiplierSlider.tsx": {
-    "mtime": 1777970743.5143917,
-    "hash": "0d0e7606bef637a3ea5d4af9ce998a70"
+    "mtime": 1778660109.6218994,
+    "hash": "15d2812ff1ce514f68ef976bd35456d7"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/bidding/ReachEstimationWidget.tsx": {
-    "mtime": 1777970718.51488,
-    "hash": "6932b3ecb77c822930f7f50bacd3207f"
+    "mtime": 1778582633.8477263,
+    "hash": "9adb00a208dd28a14f07925b2104cf9d"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/components/bidding/MultiplierSummary.tsx": {
-    "mtime": 1777970750.8223443,
-    "hash": "b89cbc831d498f69d15144719a00a1b7"
+    "mtime": 1778656779.0254385,
+    "hash": "0399c45b7f73418d0c6a7009b27e22b8"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/lib/utils.ts": {
     "mtime": 1777970605.7007742,
     "hash": "bd7f1534696295bfbab094ac93447322"
   },
+  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/lib/format.ts": {
+    "mtime": 1778005440.9229965,
+    "hash": "c1e4103b2fe5b62f478d602761c406cc"
+  },
+  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/lib/constants.ts": {
+    "mtime": 1778005437.9161065,
+    "hash": "bd5c596e1553b9383c3cbb6444e9b34a"
+  },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/pages/Reports.tsx": {
-    "mtime": 1777970910.4651692,
-    "hash": "c75b29cf13ad21826b3654225ce883f1"
+    "mtime": 1778052629.8617592,
+    "hash": "f05f654aac6a9aee1abff513ae773819"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/pages/CampaignSend.tsx": {
-    "mtime": 1777971477.0082269,
-    "hash": "d4fe1e5794d305bf50cb78de2ec42017"
+    "mtime": 1778656783.3012586,
+    "hash": "84f4140c888606fc553401f2aed81b40"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/pages/TemplateList.tsx": {
-    "mtime": 1777989602.9925432,
-    "hash": "a33fb3d145b6f21c95690a42492b49ab"
+    "mtime": 1778589148.8187559,
+    "hash": "bfdecebc3f5b1334c8ec55bda20b9850"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/pages/TemplateCreation.tsx": {
-    "mtime": 1777970812.8105865,
-    "hash": "8718df4f233b8277bdf58a2055e2ef66"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/index.html": {
-    "mtime": 1777970120.2268243,
-    "hash": "b629c87e07026734f8e6633c0deabf42"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/README.md": {
-    "mtime": 1777970120.224752,
-    "hash": "f6e3faf55d738cf2affe1b44195f27cf"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/public/icons.svg": {
-    "mtime": 1777970120.2286959,
-    "hash": "3b4fcfcf393eca4d264dca4a4663bc37"
-  },
-  "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/public/favicon.svg": {
-    "mtime": 1777970120.2277844,
-    "hash": "7e840862161341271697daa99a40d76b"
+    "mtime": 1778585047.3073401,
+    "hash": "8f6aa60d0cae5cd6db7d2c36748948c8"
   },
   "/Users/soumik.choudhry/Desktop/w-bidding/w-bidding-app/src/assets/hero.png": {
     "mtime": 1777970120.2322056,
