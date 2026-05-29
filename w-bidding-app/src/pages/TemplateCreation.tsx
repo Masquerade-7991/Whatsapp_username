@@ -31,7 +31,7 @@ const BUTTON_TYPE_LABELS: Record<ButtonType, string> = {
   VISIT_WEBSITE: 'Visit Website',
   CALL_PHONE: 'Call Phone Number',
   COPY_OFFER_CODE: 'Copy Offer Code',
-  REQUEST_CONTACT_INFO: 'Request Contact Info',
+  REQUEST_CONTACT_INFO: 'Share Contact Info',
 }
 
 const BUTTON_TYPE_SUBTITLES: Record<ButtonType, string> = {
