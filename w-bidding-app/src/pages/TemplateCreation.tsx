@@ -16,6 +16,12 @@ const CATEGORIES = [
   { value: 'UTILITY', label: 'Utility' },
   { value: 'AUTHENTICATION', label: 'Authentication' },
   { value: 'SERVICE', label: 'Service' },
+  { value: 'DIRECT', label: 'Direct' },
+]
+
+const DIRECT_HEADER_TYPES = [
+  { value: 'NONE', label: 'None' },
+  { value: 'TEXT', label: 'Text' },
 ]
 
 type ButtonType = 'QUICK_REPLY' | 'VISIT_WEBSITE' | 'CALL_PHONE' | 'COPY_OFFER_CODE' | 'REQUEST_CONTACT_INFO'
@@ -119,20 +125,36 @@ export function TemplateCreation() {
     { id: 3, type: 'COPY_OFFER_CODE', text: 'Copy Offer Code' },
   ])
 
+  const isDirectMode = category === 'DIRECT'
   const showBidding = category === 'MARKETING' && metaEnabled
+
+  useEffect(() => {
+    if (isDirectMode) {
+      if (!['NONE', 'TEXT'].includes(header)) setHeader('NONE')
+      setButtons([])
+    }
+  }, [category]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const hasRequestContactInfo = buttons.some(b => b.type === 'REQUEST_CONTACT_INFO')
   const canAddRequestContactInfo = !hasRequestContactInfo && (category === 'MARKETING' || category === 'UTILITY')
   const visitWebsiteCount = buttons.filter(b => b.type === 'VISIT_WEBSITE').length
   const callPhoneCount = buttons.filter(b => b.type === 'CALL_PHONE').length
 
-  const availableButtonTypes: ButtonType[] = [
-    'QUICK_REPLY',
-    ...(visitWebsiteCount < 2 ? ['VISIT_WEBSITE' as ButtonType] : []),
-    ...(callPhoneCount < 1 ? ['CALL_PHONE' as ButtonType] : []),
-    'COPY_OFFER_CODE',
-    ...(canAddRequestContactInfo ? ['REQUEST_CONTACT_INFO' as ButtonType] : []),
-  ]
+  const availableButtonTypes: ButtonType[] = isDirectMode
+    ? (() => {
+        const hasUrl = buttons.some(b => b.type === 'VISIT_WEBSITE')
+        const qrCount = buttons.filter(b => b.type === 'QUICK_REPLY').length
+        if (hasUrl || qrCount >= 3) return []
+        if (qrCount > 0) return ['QUICK_REPLY']
+        return ['QUICK_REPLY', 'VISIT_WEBSITE']
+      })()
+    : [
+        'QUICK_REPLY',
+        ...(visitWebsiteCount < 2 ? ['VISIT_WEBSITE' as ButtonType] : []),
+        ...(callPhoneCount < 1 ? ['CALL_PHONE' as ButtonType] : []),
+        'COPY_OFFER_CODE',
+        ...(canAddRequestContactInfo ? ['REQUEST_CONTACT_INFO' as ButtonType] : []),
+      ]
 
   function addButton(type: ButtonType) {
     setButtons(prev => [...prev, { id: ++_btnId, type, text: BUTTON_TYPE_LABELS[type] }])
@@ -264,7 +286,7 @@ export function TemplateCreation() {
                   Add a title or choose which type of media you'll use for this header.
                 </p>
                 <Select value={header} onChange={e => setHeader(e.target.value)}>
-                  {HEADER_TYPES.map(h => (
+                  {(isDirectMode ? DIRECT_HEADER_TYPES : HEADER_TYPES).map(h => (
                     <option key={h.value} value={h.value}>{h.label}</option>
                   ))}
                 </Select>
@@ -319,25 +341,27 @@ export function TemplateCreation() {
               </div>
 
               {/* Footer */}
-              <div className="flex flex-col gap-2">
-                <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>
-                  Footer <span className="text-muted-foreground" style={{ fontWeight: 'var(--font-weight-normal)' }}>Optional</span>
-                </label>
-                <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-                  Add a short line of text to the bottom of your message template.
-                </p>
-                <div className="relative">
-                  <Input
-                    placeholder="Enter text"
-                    value={footer}
-                    onChange={e => setFooter(e.target.value)}
-                    maxLength={60}
-                  />
-                  <div style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', textAlign: 'right', marginTop: '2px' }}>
-                    {footer.length}/60
+              {!isDirectMode && (
+                <div className="flex flex-col gap-2">
+                  <label style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)' }}>
+                    Footer <span className="text-muted-foreground" style={{ fontWeight: 'var(--font-weight-normal)' }}>Optional</span>
+                  </label>
+                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
+                    Add a short line of text to the bottom of your message template.
+                  </p>
+                  <div className="relative">
+                    <Input
+                      placeholder="Enter text"
+                      value={footer}
+                      onChange={e => setFooter(e.target.value)}
+                      maxLength={60}
+                    />
+                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', textAlign: 'right', marginTop: '2px' }}>
+                      {footer.length}/60
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* ── BIDDING SECTION ── */}
               {showBidding && (
@@ -355,7 +379,9 @@ export function TemplateCreation() {
                   Call to Action/Reply Buttons <span className="text-muted-foreground" style={{ fontWeight: 'var(--font-weight-normal)' }}>Optional</span>
                 </label>
                 <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-                  Create Call to Action or Reply Buttons that let customers respond to your message or take action. You can add up to 10 buttons.
+                  {isDirectMode
+                    ? 'Add up to 3 Quick Reply buttons, or 1 URL Redirect button — not both.'
+                    : 'Create Call to Action or Reply Buttons that let customers respond to your message or take action. You can add up to 10 buttons.'}
                 </p>
                 <div className="flex flex-col gap-2">
                   {buttons.map(btn => (
