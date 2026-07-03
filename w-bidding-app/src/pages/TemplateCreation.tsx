@@ -30,6 +30,9 @@ interface CtaButton {
   id: number
   type: ButtonType
   text: string
+  url?: string
+  phone?: string
+  countryCode?: string
 }
 
 const BUTTON_TYPE_LABELS: Record<ButtonType, string> = {
@@ -120,8 +123,8 @@ export function TemplateCreation() {
   const [footer, setFooter] = useState('')
   const [nameError, setNameError] = useState(false)
   const [buttons, setButtons] = useState<CtaButton[]>([
-    { id: 1, type: 'VISIT_WEBSITE', text: 'Visit Website' },
-    { id: 2, type: 'CALL_PHONE', text: 'Call Phone Number' },
+    { id: 1, type: 'VISIT_WEBSITE', text: 'Visit Website', url: '' },
+    { id: 2, type: 'CALL_PHONE', text: 'Call Phone Number', countryCode: '+91', phone: '' },
     { id: 3, type: 'COPY_OFFER_CODE', text: 'Copy Offer Code' },
   ])
 
@@ -157,11 +160,18 @@ export function TemplateCreation() {
       ]
 
   function addButton(type: ButtonType) {
-    setButtons(prev => [...prev, { id: ++_btnId, type, text: BUTTON_TYPE_LABELS[type] }])
+    const defaults: Partial<CtaButton> =
+      type === 'VISIT_WEBSITE' ? { url: '' } :
+      type === 'CALL_PHONE'    ? { countryCode: '+91', phone: '' } : {}
+    setButtons(prev => [...prev, { id: ++_btnId, type, text: BUTTON_TYPE_LABELS[type], ...defaults }])
   }
 
   function removeButton(id: number) {
     setButtons(prev => prev.filter(b => b.id !== id))
+  }
+
+  function updateButton(id: number, patch: Partial<Omit<CtaButton, 'id' | 'type'>>) {
+    setButtons(prev => prev.map(b => b.id === id ? { ...b, ...patch } : b))
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -385,34 +395,91 @@ export function TemplateCreation() {
                 </p>
                 <div className="flex flex-col gap-2">
                   {buttons.map(btn => (
-                    <div key={btn.id} className="rounded-lg border border-border p-3 flex items-start justify-between">
-                      <div className="flex flex-col gap-1">
-                        <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>Type of Action</span>
-                        <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>
-                          {BUTTON_TYPE_LABELS[btn.type]}
-                        </span>
-                        {BUTTON_TYPE_SUBTITLES[btn.type] && (
-                          <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-                            {BUTTON_TYPE_SUBTITLES[btn.type]}
-                          </span>
-                        )}
-                        {btn.type === 'REQUEST_CONTACT_INFO' && (
-                          <span
-                            className="inline-flex items-center gap-1 mt-0.5 px-2 py-0.5 rounded-full w-fit"
-                            style={{ fontSize: '10px', background: '#dbeafe', color: '#1d4ed8', fontWeight: 'var(--font-weight-medium)' }}
-                          >
-                            New
-                          </span>
-                        )}
+                    <div key={btn.id} className="rounded-lg border border-border p-3 flex flex-col gap-3">
+                      {/* header row */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-0.5">
+                          <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>Type of Action</span>
+                          <div className="flex items-center gap-2">
+                            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>
+                              {BUTTON_TYPE_LABELS[btn.type]}
+                            </span>
+                            {btn.type === 'REQUEST_CONTACT_INFO' && (
+                              <span
+                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full"
+                                style={{ fontSize: '10px', background: '#dbeafe', color: '#1d4ed8', fontWeight: 'var(--font-weight-medium)' }}
+                              >
+                                New
+                              </span>
+                            )}
+                          </div>
+                          {BUTTON_TYPE_SUBTITLES[btn.type] && btn.type !== 'CALL_PHONE' && (
+                            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
+                              {BUTTON_TYPE_SUBTITLES[btn.type]}
+                            </span>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeButton(btn.id)}
+                          className="p-1 hover:bg-muted rounded transition-colors"
+                          style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                        >
+                          <X style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => removeButton(btn.id)}
-                        className="p-1 hover:bg-muted rounded transition-colors"
-                        style={{ border: 'none', background: 'none', cursor: 'pointer' }}
-                      >
-                        <X style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
-                      </button>
+
+                      {/* Quick Reply: text label */}
+                      {btn.type === 'QUICK_REPLY' && (
+                        <Input
+                          placeholder="Button text"
+                          value={btn.text}
+                          onChange={e => updateButton(btn.id, { text: e.target.value })}
+                          maxLength={25}
+                        />
+                      )}
+
+                      {/* Visit Website: button name + URL */}
+                      {btn.type === 'VISIT_WEBSITE' && (
+                        <div className="flex flex-col gap-2">
+                          <Input
+                            placeholder="Button name"
+                            value={btn.text}
+                            onChange={e => updateButton(btn.id, { text: e.target.value })}
+                            maxLength={25}
+                          />
+                          <Input
+                            placeholder="https://example.com"
+                            value={btn.url ?? ''}
+                            onChange={e => updateButton(btn.id, { url: e.target.value })}
+                          />
+                        </div>
+                      )}
+
+                      {/* Call Phone: button text + country code + phone */}
+                      {btn.type === 'CALL_PHONE' && (
+                        <div className="flex flex-col gap-2">
+                          <Input
+                            placeholder="Button text"
+                            value={btn.text}
+                            onChange={e => updateButton(btn.id, { text: e.target.value })}
+                            maxLength={25}
+                          />
+                          <div className="flex gap-2">
+                            <Input
+                              value={btn.countryCode ?? '+91'}
+                              onChange={e => updateButton(btn.id, { countryCode: e.target.value })}
+                              style={{ width: 72 }}
+                            />
+                            <Input
+                              placeholder="Phone number"
+                              value={btn.phone ?? ''}
+                              onChange={e => updateButton(btn.id, { phone: e.target.value })}
+                              className="flex-1"
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                   {buttons.length < 10 && (
@@ -439,7 +506,7 @@ export function TemplateCreation() {
             <WhatsAppPhoneMockup
               body={body}
               footer={footer}
-              buttons={buttons.map(b => BUTTON_TYPE_LABELS[b.type])}
+              buttons={buttons.map(b => b.text)}
             />
           </div>
         </div>
