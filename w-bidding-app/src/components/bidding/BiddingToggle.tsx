@@ -3,6 +3,7 @@ import { Info } from 'lucide-react'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import { BidAmountInput } from './BidAmountInput'
+import { MultiplierCard } from './MultiplierCard'
 
 const TOOLTIP_TEXT = 'Helps in setting a custom message cost. Bid a higher value to improve engagement or bid lower to reach out to a wider audience.'
 
@@ -10,6 +11,7 @@ export function BiddingToggle() {
   const [enabled, setEnabled] = useState(false)
   const [bidAmount, setBidAmount] = useState<number | ''>(1.0)
   const [bidWasSet, setBidWasSet] = useState(false)
+  const [multiplier, setMultiplier] = useState(1.0)
 
   function handleToggle(v: boolean) {
     setEnabled(v)
@@ -63,6 +65,15 @@ export function BiddingToggle() {
       <div className="collapsible-content" data-state={enabled ? 'open' : 'closed'}>
         <div className="border-t border-border px-4 py-4 flex flex-col gap-4 bg-background">
           <BidAmountInput value={bidAmount} onChange={handleBidChange} />
+
+          {typeof bidAmount === 'number' && bidAmount > 0 && (
+            <MultiplierCard
+              baseBid={bidAmount}
+              multiplier={multiplier}
+              onChange={setMultiplier}
+              helpText="Adjusts your template's base bid. 1.0× applies the base bid with no change."
+            />
+          )}
 
           {bidWasSet && (
             <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontStyle: 'italic' }}>

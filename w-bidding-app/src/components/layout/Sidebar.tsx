@@ -4,6 +4,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
+import { useDownloads } from '@/context/DownloadsContext'
 
 interface NavItem {
   label: string
@@ -130,6 +131,28 @@ function NavItemRow({ item }: { item: NavItem }) {
   )
 }
 
+function DownloadsLink() {
+  const { downloads } = useDownloads()
+
+  return (
+    <Link
+      to="/downloads"
+      className="flex items-center gap-2 px-3 py-1.5 text-sidebar-foreground cursor-pointer hover:bg-sidebar-accent rounded-lg transition-colors"
+    >
+      <Download style={{ width: 16, height: 16 }} />
+      <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>Downloads</span>
+      {downloads.length > 0 && (
+        <span
+          className="ml-auto rounded-full px-1.5 py-0.5"
+          style={{ fontSize: '11px', fontWeight: 'var(--font-weight-semi-bold)', background: 'var(--primary)', color: 'var(--primary-foreground)' }}
+        >
+          {downloads.length}
+        </span>
+      )}
+    </Link>
+  )
+}
+
 export function Sidebar() {
   return (
     <aside
@@ -157,10 +180,7 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="border-t border-sidebar-border px-3 py-3 flex flex-col gap-1">
-        <div className="flex items-center gap-2 px-3 py-1.5 text-sidebar-foreground cursor-pointer hover:bg-sidebar-accent rounded-lg transition-colors">
-          <Download style={{ width: 16, height: 16 }} />
-          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>Downloads</span>
-        </div>
+        <DownloadsLink />
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
           <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground"
             style={{ fontSize: '11px', fontWeight: 'var(--font-weight-bold)' }}>

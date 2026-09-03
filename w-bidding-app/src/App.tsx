@@ -5,8 +5,10 @@ import { TemplateCreation } from '@/pages/TemplateCreation'
 import { CampaignSend } from '@/pages/CampaignSend'
 import { Reports } from '@/pages/Reports'
 import { BusinessProfile } from '@/pages/BusinessProfile'
+import { Downloads } from '@/pages/Downloads'
 import { DevToolbar } from '@/components/DevToolbar'
 import { FeatureProvider } from '@/context/FeatureContext'
+import { DownloadsProvider } from '@/context/DownloadsContext'
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,26 +33,29 @@ function PlaceholderPage({ title }: { title: string }) {
 export default function App() {
   return (
     <FeatureProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Navigate to="/templates" replace />} />
-            <Route path="/templates" element={<TemplateList />} />
-            <Route path="/templates/new" element={<TemplateCreation />} />
-            <Route path="/campaigns" element={<CampaignSend />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" />} />
-            <Route path="/governance" element={<PlaceholderPage title="Governance" />} />
-            <Route path="/flows" element={<PlaceholderPage title="Flows" />} />
-            <Route path="/shortlinks" element={<PlaceholderPage title="Shortlinks" />} />
-            <Route path="/profiles/edit" element={<BusinessProfile />} />
-            <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
-            <Route path="/developers" element={<PlaceholderPage title="Developers" />} />
-            <Route path="*" element={<Navigate to="/templates" replace />} />
-          </Routes>
-        </Layout>
-        <DevToolbar />
-      </BrowserRouter>
+      <DownloadsProvider>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Navigate to="/templates" replace />} />
+              <Route path="/templates" element={<TemplateList />} />
+              <Route path="/templates/new" element={<TemplateCreation />} />
+              <Route path="/campaigns" element={<CampaignSend />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" />} />
+              <Route path="/governance" element={<PlaceholderPage title="Governance" />} />
+              <Route path="/flows" element={<PlaceholderPage title="Flows" />} />
+              <Route path="/shortlinks" element={<PlaceholderPage title="Shortlinks" />} />
+              <Route path="/profiles/edit" element={<BusinessProfile />} />
+              <Route path="/downloads" element={<Downloads />} />
+              <Route path="/settings" element={<PlaceholderPage title="Settings" />} />
+              <Route path="/developers" element={<PlaceholderPage title="Developers" />} />
+              <Route path="*" element={<Navigate to="/templates" replace />} />
+            </Routes>
+          </Layout>
+          <DevToolbar />
+        </BrowserRouter>
+      </DownloadsProvider>
     </FeatureProvider>
   )
 }

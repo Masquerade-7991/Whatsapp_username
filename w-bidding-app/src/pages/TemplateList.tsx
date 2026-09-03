@@ -5,15 +5,19 @@ import {
   RefreshCw, SlidersHorizontal, ChevronDown, Plus, Download,
   ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight,
   LayoutGrid, CheckCircle, TrendingUp, Sparkles, Info,
+  Calendar as CalendarIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import { TopNav } from '@/components/layout/TopNav'
+import { WhatsAppPhoneMockup } from '@/components/layout/WhatsAppPhoneMockup'
+import { MultiplierCard } from '@/components/bidding/MultiplierCard'
 import { BID_MIN, BID_MAX, CHANNEL_TABS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { maskPhone } from '@/lib/format'
+import { useDownloads } from '@/context/DownloadsContext'
 
 interface Template {
   id: string
@@ -57,7 +61,7 @@ function StatusBadge({ status }: { status: Template['status'] }) {
   )
 }
 
-function RowActions({ onUpdateBid }: { onUpdateBid: () => void }) {
+function RowActions({ onUpdateBid, onPreview }: { onUpdateBid: () => void; onPreview: () => void }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -86,6 +90,13 @@ function RowActions({ onUpdateBid }: { onUpdateBid: () => void }) {
           style={{ minWidth: 160 }}
         >
           <button
+            onClick={() => { setOpen(false); onPreview() }}
+            className="w-full text-left px-3 py-2 hover:bg-muted transition-colors"
+            style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            Preview template
+          </button>
+          <button
             onClick={() => { setOpen(false); onUpdateBid() }}
             className="w-full text-left px-3 py-2 hover:bg-muted transition-colors"
             style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', background: 'none', border: 'none', cursor: 'pointer' }}
@@ -94,6 +105,45 @@ function RowActions({ onUpdateBid }: { onUpdateBid: () => void }) {
           </button>
         </div>
       )}
+    </div>
+  )
+}
+
+function PreviewTemplateModal({ template, onClose }: { template: Template; onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: 'rgba(0,0,0,0.5)' }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <div className="bg-background rounded-xl shadow-xl w-full mx-4" style={{ maxWidth: 480 }}>
+        <div className="flex items-start justify-between px-6 py-4 border-b border-border">
+          <div>
+            <p style={{ fontSize: '1rem', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+              Template Name: <span style={{ color: 'var(--primary)' }}>{template.name}</span>
+            </p>
+            {template.bidAmount !== undefined && (
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', marginTop: 2 }}>
+                Current bid: ₹{template.bidAmount.toFixed(2)} INR
+              </p>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded hover:bg-muted transition-colors"
+            style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--muted-foreground)', display: 'flex', alignItems: 'center' }}
+          >
+            <X style={{ width: 16, height: 16 }} />
+          </button>
+        </div>
+        <div className="px-6 py-6 flex justify-center">
+          <WhatsAppPhoneMockup
+            body={`Dear Customer, this is a ${template.category.toLowerCase()} message from Helo Ai.`}
+            footer="T&C"
+            buttons={['Visit Now']}
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -109,6 +159,7 @@ function UpdateBidModal({
 }) {
   const [value, setValue] = useState<number | ''>(template.bidAmount ?? BID_MIN)
   const [touched, setTouched] = useState(false)
+  const [multiplier, setMultiplier] = useState(1.0)
 
   const numericValue = typeof value === 'number' ? value : NaN
   const per1000 = !isNaN(numericValue) && numericValue >= BID_MIN ? numericValue * 1000 : null
@@ -191,6 +242,14 @@ function UpdateBidModal({
               <AlertCircle style={{ width: 12, height: 12 }} />
               Bid must be between ₹{BID_MIN.toFixed(2)} and ₹{BID_MAX.toFixed(2)}
             </div>
+          )}
+          {per1000 !== null && (
+            <MultiplierCard
+              baseBid={numericValue}
+              multiplier={multiplier}
+              onChange={setMultiplier}
+              helpText="Adjusts this template's bid. 1.0× applies the base bid with no change."
+            />
           )}
         </div>
         <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-border">
@@ -432,29 +491,150 @@ interface ContactRow {
   phone: string
   businessName: string
   businessNumber: string
-  lastSeen: string
+  createdAt: string
 }
 
 const CONTACTS_MOCK: ContactRow[] = [
-  { id: '1', displayName: 'Rahul Sharma',   userId: 'IN.13491208655302741918', phone: '918433853078', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-22 14:43' },
-  { id: '2', displayName: 'Priya Mehta',    userId: 'IN.87382107544291630807', phone: '918108653528', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-22 12:12' },
-  { id: '3', displayName: 'Amit Verma',     userId: 'IN.76271006433180519696', phone: '917021344401', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-21 22:23' },
-  { id: '4', displayName: 'John Smith',     userId: 'US.68946509055302741918', phone: '14155551234',  businessName: 'VCPL - Test1',   businessNumber: '15557836046', lastSeen: '2026-05-21 18:30' },
-  { id: '5', displayName: 'Sneha Patel',    userId: 'IN.51273006433080519696', phone: '919876543210', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-20 09:15' },
-  { id: '6', displayName: 'Vikram Singh',   userId: 'IN.40164905321969408585', phone: '918765432109', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-19 16:44' },
-  { id: '7', displayName: 'Neha Kapoor',    userId: 'IN.29055804210858297474', phone: '917654321098', businessName: 'VCPL - Test1',   businessNumber: '15557836046', lastSeen: '2026-05-18 11:02' },
-  { id: '8', displayName: 'Arjun Reddy',    userId: 'IN.17946703109747186363', phone: '919543210987', businessName: 'Test - Helo.ai', businessNumber: '15557836045', lastSeen: '2026-05-17 08:30' },
+  { id: '1', displayName: 'Rahul Sharma',   userId: 'IN.13491208655302741918', phone: '918433853078', businessName: 'Test - Helo.ai', businessNumber: '15557836045', createdAt: '2026-09-03 14:43' },
+  { id: '2', displayName: 'Priya Mehta',    userId: 'IN.87382107544291630807', phone: '918108653528', businessName: 'Test - Helo.ai', businessNumber: '15557836045', createdAt: '2026-09-03 12:12' },
+  { id: '3', displayName: 'Amit Verma',     userId: 'IN.76271006433180519696', phone: '917021344401', businessName: 'Test - Helo.ai', businessNumber: '15557836045', createdAt: '2026-09-02 22:23' },
+  { id: '4', displayName: 'John Smith',     userId: 'US.68946509055302741918', phone: '14155551234',  businessName: 'VCPL - Test1',   businessNumber: '15557836046', createdAt: '2026-09-02 18:30' },
+  { id: '5', displayName: 'Sneha Patel',    userId: 'IN.51273006433080519696', phone: '919876543210', businessName: 'Test - Helo.ai', businessNumber: '15557836045', createdAt: '2026-09-01 09:15' },
+  { id: '6', displayName: 'Vikram Singh',   userId: 'IN.40164905321969408585', phone: '918765432109', businessName: 'Test - Helo.ai', businessNumber: '15557836045', createdAt: '2026-08-31 16:44' },
+  { id: '7', displayName: 'Neha Kapoor',    userId: 'IN.29055804210858297474', phone: '917654321098', businessName: 'VCPL - Test1',   businessNumber: '15557836046', createdAt: '2026-08-30 11:02' },
+  { id: '8', displayName: 'Arjun Reddy',    userId: 'IN.17946703109747186363', phone: '919543210987', businessName: 'Test - Helo.ai', businessNumber: '15557836045', createdAt: '2026-08-29 08:30' },
 ]
 
-function ContactBookView() {
-  const [search, setSearch] = useState('')
+function fmtISODate(d: Date) {
+  return d.toISOString().slice(0, 10)
+}
 
-  const filtered = CONTACTS_MOCK.filter(c =>
-    c.displayName.toLowerCase().includes(search.toLowerCase()) ||
-    c.userId.toLowerCase().includes(search.toLowerCase()) ||
-    maskPhone(c.phone).includes(search) ||
-    c.businessName.toLowerCase().includes(search.toLowerCase())
+function fmtDateLabel(iso: string) {
+  return new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+function DateRangeFilter({
+  start,
+  end,
+  onChange,
+}: {
+  start: string
+  end: string
+  onChange: (start: string, end: string) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function onClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [open])
+
+  const presets = [
+    { label: 'Today', days: 0 },
+    { label: 'Last 7 days', days: 6 },
+    { label: 'Last 14 days', days: 13 },
+    { label: 'Last 30 days', days: 29 },
+  ]
+
+  function applyPreset(days: number) {
+    const endDate = new Date()
+    const startDate = new Date(endDate)
+    startDate.setDate(startDate.getDate() - days)
+    onChange(fmtISODate(startDate), fmtISODate(endDate))
+    setOpen(false)
+  }
+
+  const label = start === end ? fmtDateLabel(start) : `${fmtDateLabel(start)} - ${fmtDateLabel(end)}`
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-background hover:bg-muted transition-colors"
+        style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', cursor: 'pointer' }}
+      >
+        <CalendarIcon style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
+        {label}
+        <ChevronDown style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
+      </button>
+      {open && (
+        <div
+          className="absolute right-0 top-full mt-1 z-20 rounded-lg border border-border bg-background shadow-md p-3 flex flex-col gap-3"
+          style={{ width: 260 }}
+        >
+          <div className="flex flex-col gap-0.5">
+            {presets.map(p => (
+              <button
+                key={p.label}
+                onClick={() => applyPreset(p.days)}
+                className="text-left px-2 py-1.5 rounded hover:bg-muted transition-colors"
+                style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', border: 'none', background: 'none', cursor: 'pointer' }}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 border-t border-border pt-3">
+            <label className="flex-1 flex flex-col gap-1">
+              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>From</span>
+              <input
+                type="date"
+                value={start}
+                max={end}
+                onChange={e => onChange(e.target.value, end)}
+                className="rounded border border-border px-2 py-1"
+                style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', background: 'var(--background)' }}
+              />
+            </label>
+            <label className="flex-1 flex flex-col gap-1">
+              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>To</span>
+              <input
+                type="date"
+                value={end}
+                min={start}
+                onChange={e => onChange(start, e.target.value)}
+                className="rounded border border-border px-2 py-1"
+                style={{ fontSize: 'var(--text-sm)', color: 'var(--foreground)', background: 'var(--background)' }}
+              />
+            </label>
+          </div>
+        </div>
+      )}
+    </div>
   )
+}
+
+function ContactBookView() {
+  const { addDownload } = useDownloads()
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const [perPage, setPerPage] = useState(10)
+  const today = fmtISODate(new Date())
+  const [dateRange, setDateRange] = useState({ start: today, end: today })
+
+  const filtered = CONTACTS_MOCK.filter(c => {
+    const matchesSearch =
+      c.displayName.toLowerCase().includes(search.toLowerCase()) ||
+      c.userId.toLowerCase().includes(search.toLowerCase()) ||
+      maskPhone(c.phone).includes(search) ||
+      c.businessName.toLowerCase().includes(search.toLowerCase())
+    const createdDate = c.createdAt.slice(0, 10)
+    const matchesDate = createdDate >= dateRange.start && createdDate <= dateRange.end
+    return matchesSearch && matchesDate
+  })
+  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage))
+  const paginated = filtered.slice((page - 1) * perPage, page * perPage)
+  const rangeStart = filtered.length > 0 ? (page - 1) * perPage + 1 : 0
+  const rangeEnd = Math.min(page * perPage, filtered.length)
+
+  function handleExport() {
+    addDownload(`contact-list-${dateRange.start}_${dateRange.end}.csv`)
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -465,12 +645,17 @@ function ContactBookView() {
           type="text"
           placeholder="Search by name, User ID or business"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => { setSearch(e.target.value); setPage(1) }}
           style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 'var(--text-sm)', color: 'var(--foreground)' }}
         />
         </div>
-        <div className="ml-auto">
-          <Button size="sm" variant="outline" className="flex items-center gap-1.5">
+        <div className="ml-auto flex items-center gap-2">
+          <DateRangeFilter
+            start={dateRange.start}
+            end={dateRange.end}
+            onChange={(start, end) => { setDateRange({ start, end }); setPage(1) }}
+          />
+          <Button size="sm" variant="outline" className="flex items-center gap-1.5" onClick={handleExport}>
             <Download style={{ width: 14, height: 14 }} />
             Export
           </Button>
@@ -482,7 +667,7 @@ function ContactBookView() {
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-border">
-                {['User Display Name', 'User ID', 'User Phone Number', 'Business Name', 'Business Number', 'Last Seen'].map(h => (
+                {['User Display Name', 'User ID', 'User Phone Number', 'Business Name', 'Business Number', 'Created at'].map(h => (
                   <th key={h} className="px-4 py-3 text-left whitespace-nowrap" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
                     {h}
                   </th>
@@ -490,15 +675,15 @@ function ContactBookView() {
               </tr>
             </thead>
             <tbody>
-              {filtered.length === 0 ? (
+              {paginated.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center" style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
                     No contacts found
                   </td>
                 </tr>
               ) : (
-                filtered.map((c, i) => (
-                  <tr key={c.id} className="hover:bg-muted/20 transition-colors" style={{ borderBottom: i < filtered.length - 1 ? '1px solid var(--border)' : undefined }}>
+                paginated.map((c, i) => (
+                  <tr key={c.id} className="hover:bg-muted/20 transition-colors" style={{ borderBottom: i < paginated.length - 1 ? '1px solid var(--border)' : undefined }}>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>{c.displayName}</span>
                     </td>
@@ -515,7 +700,7 @@ function ContactBookView() {
                       <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{c.businessNumber}</span>
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{c.lastSeen}</span>
+                      <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{c.createdAt}</span>
                     </td>
                   </tr>
                 ))
@@ -523,10 +708,42 @@ function ContactBookView() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-end px-4 py-2.5 border-t border-border">
+        <div className="flex items-center justify-end gap-3 px-4 py-2.5 border-t border-border">
+          <div className="flex items-center gap-1.5">
+            <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>Rows per page</span>
+            <Select
+              value={String(perPage)}
+              onChange={e => { setPerPage(Number(e.target.value)); setPage(1) }}
+              style={{ minWidth: 70 }}
+            >
+              {[10, 25, 50, 100].map(n => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </Select>
+          </div>
           <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>
-            {filtered.length} of {CONTACTS_MOCK.length} contacts
+            {filtered.length > 0 ? `${rangeStart} - ${rangeEnd} of ${filtered.length}` : '0 - 0 of 0'}
           </span>
+          <div className="flex items-center gap-0.5">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className={cn('p-1.5 rounded transition-colors', page === 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-muted cursor-pointer')}
+              style={{ border: 'none', background: 'none', color: 'var(--foreground)', display: 'flex', alignItems: 'center' }}
+              aria-label="Previous page"
+            >
+              <ChevronLeft style={{ width: 15, height: 15 }} />
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages}
+              className={cn('p-1.5 rounded transition-colors', page >= totalPages ? 'opacity-30 cursor-not-allowed' : 'hover:bg-muted cursor-pointer')}
+              style={{ border: 'none', background: 'none', color: 'var(--foreground)', display: 'flex', alignItems: 'center' }}
+              aria-label="Next page"
+            >
+              <ChevronRight style={{ width: 15, height: 15 }} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -543,6 +760,7 @@ export function TemplateList() {
   const [activeSubTab, setActiveSubTab] = useState<SubTab>('Templates')
   const [templates, setTemplates] = useState<Template[]>(INITIAL_TEMPLATES)
   const [updatingTemplate, setUpdatingTemplate] = useState<Template | null>(null)
+  const [previewingTemplate, setPreviewingTemplate] = useState<Template | null>(null)
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const perPage = 10
@@ -824,7 +1042,7 @@ export function TemplateList() {
                           <span style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{t.lastUpdated}</span>
                         </td>
                         <td className="px-4 py-3 text-right">
-                          <RowActions onUpdateBid={() => setUpdatingTemplate(t)} />
+                          <RowActions onUpdateBid={() => setUpdatingTemplate(t)} onPreview={() => setPreviewingTemplate(t)} />
                         </td>
                       </tr>
                     ))
@@ -880,6 +1098,13 @@ export function TemplateList() {
           template={updatingTemplate}
           onSave={amount => handleSaveBid(updatingTemplate.id, amount)}
           onClose={() => setUpdatingTemplate(null)}
+        />
+      )}
+
+      {previewingTemplate && (
+        <PreviewTemplateModal
+          template={previewingTemplate}
+          onClose={() => setPreviewingTemplate(null)}
         />
       )}
     </div>

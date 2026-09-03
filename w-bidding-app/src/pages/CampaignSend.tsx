@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react'
-import { Check, ChevronRight, ChevronDown, HelpCircle, GripVertical, Upload, FileText, Users, ChevronLeft as ChevronLeftIcon, Eye, Download, Trash2 } from 'lucide-react'
+import { Check, ChevronRight, ChevronDown, GripVertical, Upload, FileText, Users, ChevronLeft as ChevronLeftIcon, Eye, Download, Trash2 } from 'lucide-react'
+import { CampaignTest } from '@/pages/CampaignTest'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
-import { Badge } from '@/components/ui/badge'
-import { MultiplierSlider } from '@/components/bidding/MultiplierSlider'
-import { MultiplierSummary } from '@/components/bidding/MultiplierSummary'
+import { MultiplierCard } from '@/components/bidding/MultiplierCard'
 import { ReachEstimationWidget } from '@/components/bidding/ReachEstimationWidget'
 import { TopNav } from '@/components/layout/TopNav'
 import { WhatsAppPhoneMockup } from '@/components/layout/WhatsAppPhoneMockup'
@@ -285,6 +284,25 @@ function AudienceStep({ onUploaded }: { onUploaded?: (done: boolean) => void }) 
   )
 }
 
+function PreviewSectionRow({ label }: { label: string }) {
+  return (
+    <tr>
+      <td colSpan={2} className="px-4 py-2.5" style={{ background: 'var(--muted)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+        {label}
+      </td>
+    </tr>
+  )
+}
+
+function PreviewRow({ label, value }: { label: string; value: string }) {
+  return (
+    <tr className="border-b border-border">
+      <td className="px-4 py-2.5" style={{ fontSize: 'var(--text-sm)', color: 'var(--muted-foreground)' }}>{label}</td>
+      <td className="px-4 py-2.5 text-right" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--foreground)' }}>{value}</td>
+    </tr>
+  )
+}
+
 export function CampaignSend() {
   const { metaEnabled } = useFeature()
   const [activeStep, setActiveStep] = useState(0)
@@ -293,6 +311,8 @@ export function CampaignSend() {
   const [selectedTemplate, setSelectedTemplate] = useState('summer_sale_v1')
   const [multiplier, setMultiplier] = useState(1.0)
   const [variablesOpen, setVariablesOpen] = useState(true)
+  const [published, setPublished] = useState(false)
+  const [testMode, setTestMode] = useState(false)
 
   const template = TEMPLATES.find(t => t.value === selectedTemplate)!
   const showMultiplier = metaEnabled && template.hasBid
@@ -336,6 +356,14 @@ export function CampaignSend() {
 
           {/* 3-column layout */}
           <div className="flex gap-4 items-start pb-8">
+            {testMode ? (
+              <CampaignTest
+                templateBody={preview?.body}
+                templateFooter={preview?.footer}
+                onBack={() => setTestMode(false)}
+              />
+            ) : (
+              <>
 
             {/* ── LEFT: Stepwise Configuration ── */}
             <div className="w-56 shrink-0 rounded-lg border border-border bg-background sticky top-4 overflow-hidden">
@@ -468,10 +496,9 @@ export function CampaignSend() {
                       Back
                     </button>
                     <button
-                      className="flex items-center gap-1 transition-opacity"
-                      disabled={!audienceUploaded}
-                      style={{ fontSize: 'var(--text-sm)', color: audienceUploaded ? 'var(--primary)' : 'var(--muted-foreground)', background: 'none', border: 'none', cursor: audienceUploaded ? 'pointer' : 'not-allowed', fontWeight: 'var(--font-weight-medium)', opacity: audienceUploaded ? 1 : 0.5 }}
-                      onClick={() => audienceUploaded && setActiveStep(2)}
+                      className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                      onClick={() => setActiveStep(2)}
                     >
                       Next →
                       <ChevronRight style={{ width: 14, height: 14 }} />
@@ -480,8 +507,8 @@ export function CampaignSend() {
                 </>
               )}
 
-              {/* Step 2+: placeholder */}
-              {activeStep >= 2 && (
+              {/* Steps 2–3: Settings / Conversion — not built out for this prototype, but progression works */}
+              {(activeStep === 2 || activeStep === 3) && (
                 <>
                   <div className="px-6 py-5 border-b border-border">
                     <span style={{ fontSize: 'var(--text-base, 1rem)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
@@ -493,7 +520,7 @@ export function CampaignSend() {
                       This step is not part of this prototype.
                     </p>
                   </div>
-                  <div className="px-6 py-4 flex items-center justify-start border-t border-border">
+                  <div className="px-6 py-4 flex items-center justify-between border-t border-border">
                     <button
                       className="flex items-center gap-1 hover:opacity-80 transition-opacity"
                       style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
@@ -502,7 +529,79 @@ export function CampaignSend() {
                       <ChevronLeftIcon style={{ width: 14, height: 14 }} />
                       Back
                     </button>
+                    <button
+                      className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                      onClick={() => setActiveStep(s => Math.min(STEPS.length - 1, s + 1))}
+                    >
+                      Next
+                      <ChevronRight style={{ width: 14, height: 14 }} />
+                    </button>
                   </div>
+                </>
+              )}
+
+              {/* Step 4: Preview */}
+              {activeStep === 4 && (
+                <>
+                  <div className="px-6 py-5 border-b border-border">
+                    <span style={{ fontSize: 'var(--text-base, 1rem)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
+                      Preview your entries
+                    </span>
+                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', marginTop: 4 }}>
+                      Review your campaign configuration before publishing.
+                    </p>
+                  </div>
+
+                  <div className="px-6 py-2">
+                    <table className="w-full border-collapse">
+                      <tbody>
+                        <PreviewSectionRow label="General Info" />
+                        <PreviewRow label="Campaign name" value={campaignName} />
+                        <PreviewRow label="Channel" value="WHATSAPP" />
+
+                        <PreviewSectionRow label="WhatsApp Configuration" />
+                        <PreviewRow label="WABA Name" value="Test - WABA Account" />
+                        <PreviewRow label="WABA Number" value="15557836045" />
+                        <PreviewRow label="Business Account Name" value="Test – Helo.ai" />
+                        <PreviewRow label="WABA Template" value={template.value} />
+                        {showMultiplier && (
+                          <PreviewRow label="Max-price multiplier" value={`${multiplier.toFixed(2)}× (base $${template.bidAmount.toFixed(2)})`} />
+                        )}
+
+                        <PreviewSectionRow label="Audience" />
+                        <PreviewRow label="Contacts uploaded" value={audienceUploaded ? 'File uploaded' : 'No file uploaded'} />
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="px-6 py-4 flex items-center justify-between border-t border-border">
+                    <button
+                      className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                      onClick={() => setActiveStep(3)}
+                    >
+                      <ChevronLeftIcon style={{ width: 14, height: 14 }} />
+                      Previous
+                    </button>
+                    <div className="flex items-center gap-4">
+                      <button
+                        className="hover:opacity-80 transition-opacity"
+                        style={{ fontSize: 'var(--text-sm)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'var(--font-weight-medium)' }}
+                        onClick={() => setTestMode(true)}
+                      >
+                        Test Your Campaign
+                      </button>
+                      <Button size="sm" onClick={() => setPublished(true)}>Publish</Button>
+                    </div>
+                  </div>
+
+                  {published && (
+                    <div className="mx-6 mb-5 flex items-center gap-2 px-4 py-3 rounded-lg" style={{ background: '#dcfce7' }}>
+                      <Check style={{ width: 16, height: 16, color: '#15803d' }} />
+                      <p style={{ fontSize: 'var(--text-sm)', color: '#15803d' }}>Campaign published — this is a prototype, no message is actually sent.</p>
+                    </div>
+                  )}
                 </>
               )}
 
@@ -566,30 +665,14 @@ export function CampaignSend() {
               {/* ── MAX-PRICE MULTIPLIER (custom addition) ── */}
               {showMultiplier && (
                 <div className="px-6 py-5 border-b border-border">
-                  <div className="flex flex-col gap-3 rounded-lg border border-ring/30 bg-accent/30 px-4 py-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semi-bold)', color: 'var(--foreground)' }}>
-                          Max-Price Multiplier
-                        </span>
-                        <button
-                          title="Adjusts your template bid for this campaign. 1.0× applies the base bid with no change."
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-                        >
-                          <HelpCircle style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
-                        </button>
-                      </div>
-                      <Badge variant="outline" className="text-amber-700 border-amber-300 bg-amber-50">
-                        Tentative
-                      </Badge>
-                    </div>
-                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)' }}>
-                      Adjust the bid multiplier for this campaign send. 1.0× applies the base bid with no change.
-                    </p>
-                    <MultiplierSlider value={multiplier} onChange={setMultiplier} />
-                    <MultiplierSummary baseBid={template.bidAmount} multiplier={multiplier} />
+                  <MultiplierCard
+                    baseBid={template.bidAmount}
+                    multiplier={multiplier}
+                    onChange={setMultiplier}
+                    helpText="Adjusts your template bid for this campaign. 1.0× applies the base bid with no change."
+                  >
                     <ReachEstimationWidget />
-                  </div>
+                  </MultiplierCard>
                 </div>
               )}
 
@@ -709,6 +792,8 @@ export function CampaignSend() {
               </div>
             </div>
 
+              </>
+            )}
           </div>
         </div>
       </div>
